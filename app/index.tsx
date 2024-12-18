@@ -1,17 +1,21 @@
-import { Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
-import { useFonts, Roboto_700Bold, Roboto_400Regular } from "@expo-google-fonts/roboto";
-import Input from "@/app-example/components/Input";
+import { Dimensions, Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
+import { Colors } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PasswordInput from "@/app-example/components/PasswordInput";
-import RoundedButton from "@/app-example/components/RoundedButton";
-import CheckBox from "@/app-example/components/CheckBox";
-import { Colors } from "@/app-example/constants/Colors";
+import Input from "../component/Input";
+import PasswordInput from "../component/PasswordInput";
+import RoundedButton from "../component/RoundedButton";
+import CheckBox from "../component/CheckBox";
 
 
 export default function Index() {
   const [fontsLoaded] = useFonts({Roboto_700Bold});
   if (!fontsLoaded) return null;
 
+  const { width } = Dimensions.get('window');
+  const isMobileView = width < 480;
+  const containerStyle = isMobileView? [styles.partContainer, { flex: 1 }] : styles.partContainer;
+  
   return (
     <SafeAreaView style={styles.cotainer}>
       <View style={styles.partContainer}>
@@ -33,11 +37,13 @@ export default function Index() {
           <RoundedButton title="SIGN IN" onPress={()=>{}}></RoundedButton>
         </View>
       </View>
-      <View style={styles.partContainer}>
-        <View style={styles.imageContainer}>
-          <Image style={styles.formatImage} source={require('../assets/images/Login.png')} resizeMode="cover"></Image>
+      { !isMobileView && 
+        <View style={styles.partContainer}>
+          <View style={styles.imageContainer}>
+            <Image style={styles.formatImage} source={require('../assets/images/Login.png')} resizeMode="contain"></Image>
+          </View>
         </View>
-      </View>
+      }
     </SafeAreaView>
   );
 }
