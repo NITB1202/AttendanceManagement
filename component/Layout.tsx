@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Navbar from "../component/NavBar"; // Đường dẫn tới Navbar component
 import Header from "../component/Header"; // Thêm Header component
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [isNavbarVisible, setIsNavbarVisible] = useState(true); // State để kiểm soát hiển thị Navbar
+  const [isNavbarVisible, setIsNavbarVisible] = useState(false); // State để kiểm soát hiển thị Navbar
+  const { width } = Dimensions.get("window");
+  const isMobileView = width < 480; // Kiểm tra nếu là màn hình nhỏ
 
   const toggleNavbar = () => {
     setIsNavbarVisible((prev) => !prev); // Đảo trạng thái hiển thị Navbar
@@ -24,7 +26,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Navbar (hiển thị hoặc ẩn dựa trên state isNavbarVisible) */}
       {isNavbarVisible && (
-        <View style={styles.navbar}>
+        <View
+          style={[
+            styles.navbar,
+            isMobileView ? styles.navbarMobile : {}, // Áp dụng kiểu dành cho điện thoại
+          ]}
+        >
+          <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
+            <Ionicons name="close-outline" size={30} color="#fff" />
+          </TouchableOpacity>
           <Navbar />
         </View>
       )}
@@ -33,7 +43,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <View
         style={[
           styles.mainContent,
-          !isNavbarVisible && styles.fullWidthContent,
+          isMobileView && isNavbarVisible && styles.mainContentOverlay, // Làm mờ main content khi navbar hiện
         ]}
       >
         {/* Header nằm ở đầu mainContent */}
@@ -53,9 +63,9 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     position: "absolute",
-    top: 6,
-    left: 2,
-    zIndex: 10, // Đảm bảo nút menu luôn hiển thị trên cùng
+    top: 10,
+    left: 10,
+    zIndex: 30, // Đảm bảo nút menu luôn hiển thị trên cùng
     backgroundColor: "#001F3F",
     borderRadius: 10,
     padding: 2,
@@ -65,15 +75,23 @@ const styles = StyleSheet.create({
     flex: 1.7,
     backgroundColor: "#001f3f",
   },
+  navbarMobile: {
+    position: "absolute",
+    width: "70%", // Chiều rộng chiếm 70% màn hình điện thoại
+    height: "100%", // Chiều cao toàn màn hình
+    zIndex: 20, // Đè lên Main Content
+    backgroundColor: "#001F3F",
+  },
   mainContent: {
     flex: 8.3,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#FFFFFF",
   },
-  fullWidthContent: {
-    flex: 1, // Chiếm toàn bộ chiều rộng khi Navbar bị ẩn
+  mainContentOverlay: {
+    opacity: 0.5, // Làm mờ Main Content khi Navbar hiển thị trên mobile
   },
   content: {
     flex: 1,
-    padding: 20, // Nội dung nằm dưới Header
+    padding: 10, // Nội dung nằm dưới Header
+    paddingLeft: 20,
   },
 });

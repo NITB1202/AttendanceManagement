@@ -16,7 +16,6 @@ import PasswordInput from "../component/PasswordInput";
 import RoundedButton from "../component/RoundedButton";
 import CheckBox from "../component/CheckBox";
 import ForgotPassword from "./authentication/forgotpassword";
-import DashboardStudent from "./section_student/dashboard_student";
 import { router } from "expo-router";
 
 export default function Index() {
@@ -35,9 +34,11 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.partContainer}>
-        <View style={styles.formContainer}>
-          <Text style={styles.header}>SIGN IN</Text>
+      <View style={[styles.partContainer, isMobileView && styles.fullWidth]}>
+        <View style={[styles.formContainer, isMobileView && styles.formMobile]}>
+          <Text style={[styles.header, isMobileView && styles.headerMobile]}>
+            SIGN IN
+          </Text>
           <View style={styles.inputContainer}>
             <Input title="Email" placeHolder="Enter your email..." />
             <PasswordInput
@@ -56,7 +57,7 @@ export default function Index() {
           </View>
           <RoundedButton
             title="SIGN IN"
-            onPress={() => router.push("/section_student/dashboard_student")} // Điều hướng đến DashboardStudent
+            onPress={() => router.push("/section_student/dashboard_student")}
           />
         </View>
       </View>
@@ -85,10 +86,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  fullWidth: {
+    width: "100%",
+  },
   header: {
     fontFamily: "Roboto_700Bold",
     fontSize: 48,
     textAlign: "center",
+  },
+  headerMobile: {
+    fontSize: 32,
   },
   inputContainer: {
     gap: 15,
@@ -107,6 +114,11 @@ const styles = StyleSheet.create({
     gap: 40,
     width: 400,
     paddingBottom: 100,
+  },
+  formMobile: {
+    width: "90%",
+    gap: 30,
+    paddingBottom: 50,
   },
   highlight: {
     fontSize: 18,

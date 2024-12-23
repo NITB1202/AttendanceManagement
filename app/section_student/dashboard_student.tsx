@@ -49,8 +49,8 @@ export default function DashboardStudent() {
 const styles = StyleSheet.create({
   dashboardContent: {
     flexGrow: 1,
-    padding: 20,
-    backgroundColor: "#f5f5f5",
+    paddingTop: 0,
+    backgroundColor: "#FFFFFF",
   },
   header: {
     fontSize: 24,
