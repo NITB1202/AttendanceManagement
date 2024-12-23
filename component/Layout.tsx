@@ -15,7 +15,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <View style={styles.container}>
       {/* Nút Menu */}
       <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-        <Ionicons name="menu-outline" size={30} color="#fff" />
+        <Ionicons
+          name={isNavbarVisible ? "close-outline" : "menu-outline"} // Thay đổi icon
+          size={30}
+          color="#fff"
+        />
       </TouchableOpacity>
 
       {/* Navbar (hiển thị hoặc ẩn dựa trên state isNavbarVisible) */}
@@ -50,12 +54,11 @@ const styles = StyleSheet.create({
   menuIcon: {
     position: "absolute",
     top: 6,
-    left: 10,
+    left: 2,
     zIndex: 10, // Đảm bảo nút menu luôn hiển thị trên cùng
     backgroundColor: "#001F3F",
     borderRadius: 10,
-    padding: 5,
-    elevation: 3,
+    padding: 2,
   },
   navbar: {
     paddingTop: 30,

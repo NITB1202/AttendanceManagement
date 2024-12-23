@@ -1,12 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter, usePathname } from "expo-router";
 
 function Navbar() {
-  const [activeItem, setActiveItem] = useState("Dashboard"); // State mặc định là Dashboard
+  const router = useRouter();
+  const pathname = usePathname(); // Lấy đường dẫn hiện tại
+  const [activeItem, setActiveItem] = useState<string | null>(null); // Không mặc định mục nào được chọn
+
+  // Cập nhật trạng thái `activeItem` dựa trên đường dẫn hiện tại
+  useEffect(() => {
+    if (pathname.includes("dashboard_student")) {
+      setActiveItem("Dashboard");
+    } else if (pathname.includes("class_student")) {
+      setActiveItem("Class");
+    } else if (pathname.includes("attendance")) {
+      setActiveItem("Attendance");
+    } else if (pathname.includes("roll_call")) {
+      setActiveItem("RollCall");
+    } else {
+      setActiveItem(null); // Nếu không khớp đường dẫn nào
+    }
+  }, [pathname]);
 
   const handlePress = (item: string) => {
-    setActiveItem(item); // Cập nhật trạng thái khi nhấn
+    setActiveItem(item); // Cập nhật trạng thái activeItem
+
+    // Điều hướng tới các đường dẫn khác nhau dựa trên item
+    switch (item) {
+      case "Dashboard":
+        router.push("/section_student/dashboard_student");
+        break;
+      case "Class":
+        router.push("/section_student/class_student");
+        break;
+      case "Attendance":
+        router.push("/");
+        break;
+      case "RollCall":
+        router.push("/");
+        break;
+      default:
+        router.push("/");
+    }
   };
 
   return (
@@ -14,40 +50,38 @@ function Navbar() {
       {/* Logo Section */}
       <View style={styles.logoContainer}>
         <Image
-          source={require("../assets/images/Logo.png")} // Thay đổi đường dẫn tới logo cục bộ
+          source={require("../assets/images/Logo.png")}
           style={styles.logo}
         />
       </View>
 
       {/* Menu Section */}
       <View style={styles.menuContainer}>
-        {["Dashboard", "Class", "Attendance", "Roll Call"].map(
-          (item: string) => (
-            <TouchableOpacity
-              key={item}
-              style={[
-                styles.menuItem,
-                activeItem === item && styles.activeMenuItem,
-              ]}
-              onPress={() => handlePress(item)}
-            >
-              <Ionicons
-                name={
-                  item === "Dashboard"
-                    ? "home-outline"
-                    : item === "Class"
-                    ? "book-outline"
-                    : item === "Attendance"
-                    ? "calendar-outline"
-                    : "clipboard-outline"
-                }
-                size={20}
-                color="#ffffff"
-              />
-              <Text style={styles.menuText}>{item}</Text>
-            </TouchableOpacity>
-          )
-        )}
+        {["Dashboard", "Class", "Attendance", "RollCall"].map((item) => (
+          <TouchableOpacity
+            key={item}
+            style={[
+              styles.menuItem,
+              activeItem === item && styles.activeMenuItem, // Áp dụng màu nền nếu được chọn
+            ]}
+            onPress={() => handlePress(item)} // Gọi hàm handlePress
+          >
+            <Ionicons
+              name={
+                item === "Dashboard"
+                  ? "home-outline"
+                  : item === "Class"
+                  ? "book-outline"
+                  : item === "Attendance"
+                  ? "calendar-outline"
+                  : "clipboard-outline"
+              }
+              size={20}
+              color="#ffffff"
+            />
+            <Text style={styles.menuText}>{item}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Logout Section */}
@@ -62,6 +96,7 @@ function Navbar() {
 const styles = StyleSheet.create({
   navbarContainer: {
     backgroundColor: "#001F3F",
+    marginLeft: 10,
     flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,
@@ -89,10 +124,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     marginBottom: 10,
-    backgroundColor: "transparent", // Màu nền mặc định là trong suốt
+    backgroundColor: "transparent", // Màu nền mặc định
   },
   activeMenuItem: {
-    backgroundColor: "#3A6D8C", // Màu nền khi mục đang hoạt động
+    backgroundColor: "#3A6D8C", // Màu nền khi được chọn
   },
   menuText: {
     color: "#ffffff",
@@ -105,7 +140,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 8,
-    backgroundColor: "#d9534f", // Màu đỏ cho nút Logout
+    backgroundColor: "#d9534f",
   },
   logoutText: {
     color: "#ffffff",
