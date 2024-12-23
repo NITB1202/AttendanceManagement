@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Dimensions, Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { Colors } from "@/constants/Colors";
@@ -6,15 +7,21 @@ import Input from "../component/Input";
 import PasswordInput from "../component/PasswordInput";
 import RoundedButton from "../component/RoundedButton";
 import CheckBox from "../component/CheckBox";
-
+import ForgotPassword from './authentication/forgotpassword';
 
 export default function Index() {
   const [fontsLoaded] = useFonts({Roboto_700Bold});
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
   if (!fontsLoaded) return null;
 
   const { width } = Dimensions.get('window');
   const isMobileView = width < 480;
   const containerStyle = isMobileView? [styles.partContainer, { flex: 1 }] : styles.partContainer;
+
+  if (showForgotPassword) {
+    return <ForgotPassword onBack={() => setShowForgotPassword(false)} />;
+  }
   
   return (
     <SafeAreaView style={styles.cotainer}>
@@ -29,7 +36,7 @@ export default function Index() {
                 <CheckBox onPress={(isChecked)=>{}}></CheckBox>
                 <Text style={styles.text}>Remember me</Text>
               </View>
-              <TouchableHighlight>
+              <TouchableHighlight onPress={() => setShowForgotPassword(true)}>
                   <Text style={styles.highlight}>Forgot password?</Text>
               </TouchableHighlight>
             </View>
