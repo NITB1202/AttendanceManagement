@@ -25,16 +25,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </TouchableOpacity>
 
       {/* Navbar (hiển thị hoặc ẩn dựa trên state isNavbarVisible) */}
-      {isNavbarVisible && (
+      {(isNavbarVisible || !isMobileView) && (
         <View
           style={[
             styles.navbar,
             isMobileView ? styles.navbarMobile : {}, // Áp dụng kiểu dành cho điện thoại
           ]}
         >
-          <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-            <Ionicons name="close-outline" size={30} color="#fff" />
-          </TouchableOpacity>
+          {isMobileView && (
+            <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
+              <Ionicons name="close-outline" size={30} color="#fff" />
+            </TouchableOpacity>
+          )}
           <Navbar />
         </View>
       )}
