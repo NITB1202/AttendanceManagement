@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RoundedButton from '@/component/RoundedButton';
 
 interface VerificationProps {
     onBack: () => void;
+    onResetPassword: () => void;
 }
 
-export default function Verification({ onBack }: VerificationProps) {
+export default function Verification({ onBack, onResetPassword }: VerificationProps) {
     const [code, setCode] = useState(['', '', '', '']);
-    const [timer, setTimer] = useState(120);
-
+    const [timer, setTimer] = useState(120); 
     useEffect(() => {
         const interval = setInterval(() => {
             setTimer(prevTimer => {
@@ -32,7 +32,6 @@ export default function Verification({ onBack }: VerificationProps) {
     };
 
     const handleResend = () => {
-        // Logic để gửi lại mã xác thực
         console.log("Resend code");
     };
 
@@ -61,7 +60,7 @@ export default function Verification({ onBack }: VerificationProps) {
                         ))}
                     </View>
                     <Text style={styles.timerText}>Time remaining: {formatTime(timer)}</Text>
-                    <RoundedButton title="CONFIRM" onPress={() => { }} style={styles.input}></RoundedButton>
+                    <RoundedButton title="CONFIRM" onPress={onResetPassword} style={styles.input}></RoundedButton>
                     <View style={styles.resendContainer}>
                         <Text style={styles.resendText}>Didn't receive a code? </Text>
                         <TouchableOpacity onPress={handleResend}>
@@ -93,15 +92,15 @@ const styles = StyleSheet.create({
     },
     header: {
         fontFamily: "Roboto_700Bold",
-        fontSize: 40,
+        fontSize: 48,
         fontWeight: 'bold',
         color: 'black',
         marginBottom: 20,
     },
     notice: {
         fontFamily: "Roboto_700Bold",
-        fontSize: 16,
-        color: "#959595",
+        fontSize: 20,
+        color: 'gray',
         textAlign: 'center',
         marginBottom: 10,
     },
@@ -111,8 +110,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     codeInput: {
-        width: 50,
-        height: 50,
+        width: 80,
+        height: 80,
         borderWidth: 1,
         borderColor: 'gray',
         textAlign: 'center',
@@ -120,7 +119,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     timerText: {
-        fontSize: 16,
+        fontFamily: "Roboto_700Bold",
+        fontSize: 20,
         color: 'black',
         marginBottom: 20,
     },
@@ -138,11 +138,13 @@ const styles = StyleSheet.create({
         fontFamily: "Roboto_700Bold",
         fontSize: 20,
         color: 'black',
+        marginBottom: 20,
     },
     resendLink: {
         fontFamily: "Roboto_700Bold",
         fontSize: 20,
-        color: 'blue',
+        color: "#3A6D8C",
         textDecorationLine: 'underline',
+        marginBottom: 20,
     },
 });
