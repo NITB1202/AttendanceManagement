@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Sử dụng thư viện Expo hoặc cài đặt react-native-vector-icons
+import { Ionicons } from "@expo/vector-icons";
 
 function Navbar() {
+  const [activeItem, setActiveItem] = useState("Dashboard"); // State mặc định là Dashboard
+
+  const handlePress = (item: string) => {
+    setActiveItem(item); // Cập nhật trạng thái khi nhấn
+  };
+
   return (
     <View style={styles.navbarContainer}>
       {/* Logo Section */}
@@ -15,22 +21,33 @@ function Navbar() {
 
       {/* Menu Section */}
       <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="home-outline" size={20} color="#ffffff" />
-          <Text style={styles.menuText}>Dashboard</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="book-outline" size={20} color="#ffffff" />
-          <Text style={styles.menuText}>Class</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="calendar-outline" size={20} color="#ffffff" />
-          <Text style={styles.menuText}>Attendance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="clipboard-outline" size={20} color="#ffffff" />
-          <Text style={styles.menuText}>Roll Call</Text>
-        </TouchableOpacity>
+        {["Dashboard", "Class", "Attendance", "Roll Call"].map(
+          (item: string) => (
+            <TouchableOpacity
+              key={item}
+              style={[
+                styles.menuItem,
+                activeItem === item && styles.activeMenuItem,
+              ]}
+              onPress={() => handlePress(item)}
+            >
+              <Ionicons
+                name={
+                  item === "Dashboard"
+                    ? "home-outline"
+                    : item === "Class"
+                    ? "book-outline"
+                    : item === "Attendance"
+                    ? "calendar-outline"
+                    : "clipboard-outline"
+                }
+                size={20}
+                color="#ffffff"
+              />
+              <Text style={styles.menuText}>{item}</Text>
+            </TouchableOpacity>
+          )
+        )}
       </View>
 
       {/* Logout Section */}
@@ -44,12 +61,12 @@ function Navbar() {
 
 const styles = StyleSheet.create({
   navbarContainer: {
-    width: 231,
-    backgroundColor: "#001f3f",
+    backgroundColor: "#001F3F",
     flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,
     justifyContent: "space-between",
+    marginRight: 10,
   },
   logoContainer: {
     flexDirection: "row",
@@ -60,11 +77,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 40,
     marginRight: 10,
-  },
-  logoText: {
-    color: "#ffffff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
   menuContainer: {
     flex: 1,
@@ -77,7 +89,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     marginBottom: 10,
-    backgroundColor: "#002d5f", // Màu nền của menu item
+    backgroundColor: "transparent", // Màu nền mặc định là trong suốt
+  },
+  activeMenuItem: {
+    backgroundColor: "#3A6D8C", // Màu nền khi mục đang hoạt động
   },
   menuText: {
     color: "#ffffff",
