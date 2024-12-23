@@ -1,110 +1,130 @@
-import React, { useState } from 'react';
-import { Dimensions, Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
+import React, { useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+} from "react-native";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { Colors } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native"; // Import điều hướng
 import Input from "../component/Input";
 import PasswordInput from "../component/PasswordInput";
 import RoundedButton from "../component/RoundedButton";
 import CheckBox from "../component/CheckBox";
-import ForgotPassword from './authentication/forgotpassword';
+import ForgotPassword from "./authentication/forgotpassword";
+import DashboardStudent from "./section_student/dashboard_student";
+import { router } from "expo-router";
 
 export default function Index() {
-  const [fontsLoaded] = useFonts({Roboto_700Bold});
+  const [fontsLoaded] = useFonts({ Roboto_700Bold });
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const navigation = useNavigation(); // Sử dụng hook điều hướng
 
   if (!fontsLoaded) return null;
 
-  const { width } = Dimensions.get('window');
+  const { width } = Dimensions.get("window");
   const isMobileView = width < 480;
-  const containerStyle = isMobileView? [styles.partContainer, { flex: 1 }] : styles.partContainer;
 
   if (showForgotPassword) {
     return <ForgotPassword onBack={() => setShowForgotPassword(false)} />;
   }
-  
+
   return (
-    <SafeAreaView style={styles.cotainer}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.partContainer}>
-        <View style={styles.formCotainer}>
+        <View style={styles.formContainer}>
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
-            <Input title="Email" placeHolder="Enter your email..."></Input>
-            <PasswordInput title="Password" placeHolder="Enter your password..."></PasswordInput>
+            <Input title="Email" placeHolder="Enter your email..." />
+            <PasswordInput
+              title="Password"
+              placeHolder="Enter your password..."
+            />
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>
-                <CheckBox onPress={(isChecked)=>{}}></CheckBox>
+                <CheckBox onPress={(isChecked) => {}} />
                 <Text style={styles.text}>Remember me</Text>
               </View>
               <TouchableHighlight onPress={() => setShowForgotPassword(true)}>
-                  <Text style={styles.highlight}>Forgot password?</Text>
+                <Text style={styles.highlight}>Forgot password?</Text>
               </TouchableHighlight>
             </View>
           </View>
-          <RoundedButton title="SIGN IN" onPress={()=>{}}></RoundedButton>
+          <RoundedButton
+            title="SIGN IN"
+            onPress={() => router.push("/section_student/dashboard_student")} // Điều hướng đến DashboardStudent
+          />
         </View>
       </View>
-      { !isMobileView && 
+      {!isMobileView && (
         <View style={styles.partContainer}>
           <View style={styles.imageContainer}>
-            <Image style={styles.formatImage} source={require('../assets/images/Login.png')} resizeMode="contain"></Image>
+            <Image
+              style={styles.formatImage}
+              source={require("../assets/images/Login.png")}
+              resizeMode="contain"
+            />
           </View>
         </View>
-      }
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  cotainer:{
+  container: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
   },
-  partContainer:{
+  partContainer: {
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
   },
-  header:{
+  header: {
     fontFamily: "Roboto_700Bold",
     fontSize: 48,
-    textAlign: "center"
+    textAlign: "center",
   },
-  inputContainer:{
-    gap: 15
+  inputContainer: {
+    gap: 15,
   },
-  checkBoxContainer:{
+  checkBoxContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 10,
   },
-  text:{
+  text: {
     fontFamily: "Roboto_400Regular",
     fontSize: 18,
   },
-  formCotainer:{
+  formContainer: {
     gap: 40,
     width: 400,
-    paddingBottom: 100
+    paddingBottom: 100,
   },
-  highlight:{
+  highlight: {
     fontSize: 18,
     fontFamily: "Roboto_700Bold",
-    color: Colors.primary
+    color: Colors.primary,
   },
-  bottom:{
+  bottom: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
-  formatImage:{
+  formatImage: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
-  imageContainer:{
+  imageContainer: {
     width: "80%",
     height: "80%",
-    overflow: "hidden"
-  }
+    overflow: "hidden",
+  },
 });
