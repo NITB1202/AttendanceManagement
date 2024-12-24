@@ -5,7 +5,7 @@ import Navbar from "../component/NavBar"; // Đường dẫn tới Navbar compon
 import Header from "../component/Header"; // Thêm Header component
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [isNavbarVisible, setIsNavbarVisible] = useState(false); // State để kiểm soát hiển thị Navbar
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true); // Mặc định Navbar hiển thị
   const { width } = Dimensions.get("window");
   const isMobileView = width < 480; // Kiểm tra nếu là màn hình nhỏ
 
@@ -25,18 +25,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </TouchableOpacity>
 
       {/* Navbar (hiển thị hoặc ẩn dựa trên state isNavbarVisible) */}
-      {(isNavbarVisible || !isMobileView) && (
+      {isNavbarVisible && (
         <View
           style={[
             styles.navbar,
             isMobileView ? styles.navbarMobile : {}, // Áp dụng kiểu dành cho điện thoại
           ]}
         >
-          {isMobileView && (
-            <TouchableOpacity style={styles.menuIcon} onPress={toggleNavbar}>
-              <Ionicons name="close-outline" size={30} color="#fff" />
-            </TouchableOpacity>
-          )}
           <Navbar />
         </View>
       )}

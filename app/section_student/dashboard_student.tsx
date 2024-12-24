@@ -1,45 +1,95 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
+import { PieChart } from "react-native-chart-kit";
 import Layout from "../../component/Layout"; // Đường dẫn tới Layout component
+import { Ionicons } from "@expo/vector-icons";
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function DashboardStudent() {
+  const pieData = [
+    {
+      name: "On-time",
+      population: 3,
+      color: "#ff0000",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Late",
+      population: 2,
+      color: "#ffcc00",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Absence",
+      population: 2,
+      color: "#007FFF",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+  ];
+
   return (
     <Layout>
-      {/* Nội dung chính của Dashboard */}
       <ScrollView contentContainerStyle={styles.dashboardContent}>
-        <Text style={styles.header}>Dashboard - Student</Text>
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Text style={styles.cardText}>Number of lateness</Text>
-            <Text style={styles.cardNumber}>3</Text>
+        <Text style={styles.title}>Attendance Status</Text>
+
+        {/* Container for Summary and PieChart */}
+        <View style={styles.rowContainer}>
+          {/* Summary - Display as table */}
+          <View style={styles.summaryContainer}>
+            <View style={styles.row}>
+              <View style={[styles.summaryBox, { backgroundColor: "#7BAFD4" }]}>
+                <Ionicons name="time-outline" size={24} color="#fff" />
+                <Text style={styles.summaryTitle}>Number of lateness</Text>
+                <Text style={styles.summaryValue}>3</Text>
+              </View>
+              <View style={[styles.summaryBox, { backgroundColor: "#F5BE40" }]}>
+                <Ionicons name="alert-circle-outline" size={24} color="#fff" />
+                <Text style={styles.summaryTitle}>
+                  Maximum allowed lateness
+                </Text>
+                <Text style={styles.summaryValue}>6</Text>
+              </View>
+            </View>
+            <View style={styles.row}>
+              <View style={[styles.summaryBox, { backgroundColor: "#4CAF50" }]}>
+                <Ionicons name="person-outline" size={24} color="#fff" />
+                <Text style={styles.summaryTitle}>Number of absences</Text>
+                <Text style={styles.summaryValue}>2</Text>
+              </View>
+              <View style={[styles.summaryBox, { backgroundColor: "#F44336" }]}>
+                <Ionicons name="person-remove-outline" size={24} color="#fff" />
+                <Text style={styles.summaryTitle}>
+                  Maximum allowed absences
+                </Text>
+                <Text style={styles.summaryValue}>4</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.card}>
-            <Text style={styles.cardText}>Maximum allowed lateness</Text>
-            <Text style={styles.cardNumber}>6</Text>
-          </View>
-          <View style={styles.card}>
-            <Text style={styles.cardText}>Number of absence</Text>
-            <Text style={styles.cardNumber}>2</Text>
-          </View>
-          <View style={styles.card}>
-            <Text style={styles.cardText}>Maximum allowed absence</Text>
-            <Text style={styles.cardNumber}>4</Text>
-          </View>
-        </View>
-        <Text style={styles.attendanceHeader}>Attendance Record</Text>
-        <View style={styles.attendanceTable}>
-          <View style={styles.tableHeader}>
-            <Text style={styles.tableHeaderText}>No</Text>
-            <Text style={styles.tableHeaderText}>Date</Text>
-            <Text style={styles.tableHeaderText}>Arrival Time</Text>
-            <Text style={styles.tableHeaderText}>Attendance Status</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>1</Text>
-            <Text style={styles.tableCell}>12/09/2024</Text>
-            <Text style={styles.tableCell}>09:00 AM</Text>
-            <Text style={styles.tableCell}>Late</Text>
-          </View>
+
+          {/* PieChart */}
+          <PieChart
+            data={pieData}
+            width={screenWidth * 0.45} // Chiếm 50% container
+            height={220}
+            chartConfig={{
+              backgroundColor: "#1cc910",
+              backgroundGradientFrom: "#eff3ff",
+              backgroundGradientTo: "#efefef",
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+            }}
+            accessor={"population"}
+            backgroundColor={"transparent"}
+            paddingLeft={"15"}
+            absolute
+          />
         </View>
       </ScrollView>
     </Layout>
@@ -49,77 +99,50 @@ export default function DashboardStudent() {
 const styles = StyleSheet.create({
   dashboardContent: {
     flexGrow: 1,
-    paddingTop: 0,
+    paddingTop: 20,
     backgroundColor: "#FFFFFF",
+    paddingHorizontal: 20,
   },
-  header: {
-    fontSize: 24,
+  title: {
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 20,
-    color: "#001f3f",
+    marginBottom: 10,
+    textAlign: "center",
   },
-  cardContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  rowContainer: {
+    flexDirection: "row", // Sắp xếp theo hàng
     justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 20,
   },
-  card: {
-    backgroundColor: "#007bff",
-    width: "48%",
-    borderRadius: 8,
+  summaryContainer: {
+    flex: 1, // Chiếm 50% container
+    marginRight: 10,
+  },
+  row: {
+    flexDirection: "row", // Mỗi hàng chứa 2 ô
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  summaryBox: {
+    width: "48%", // Mỗi ô chiếm 48% chiều rộng trong hàng
+    backgroundColor: "#f5f5f5",
     padding: 15,
-    marginBottom: 10,
-  },
-  cardText: {
-    color: "#ffffff",
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  cardNumber: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  attendanceHeader: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginVertical: 15,
-    color: "#001f3f",
-  },
-  attendanceTable: {
-    backgroundColor: "#ffffff",
     borderRadius: 8,
-    padding: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 3,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 2, // Đổ bóng
   },
-  tableHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
+  summaryTitle: {
+    fontSize: 14,
+    color: "#fff",
+    textAlign: "center",
+    marginTop: 5,
   },
-  tableHeaderText: {
+  summaryValue: {
+    fontSize: 18,
     fontWeight: "bold",
-    fontSize: 14,
-    color: "#001f3f",
-    flex: 1,
-    textAlign: "center",
-  },
-  tableRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    paddingVertical: 10,
-  },
-  tableCell: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: 14,
-    color: "#333",
+    color: "#fff",
+    marginTop: 5,
   },
 });
