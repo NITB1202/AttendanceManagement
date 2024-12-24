@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RoundedButton from '@/component/RoundedButton';
 import PasswordInput from '@/component/PasswordInput';
@@ -13,9 +13,35 @@ export default function ResetPassword({ onBack, onPasswordUpdated }: ResetPasswo
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleResetPassword = () => {
-        console.log("Password reset");
-        onPasswordUpdated();
+    const handleResetPassword = async () => {
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        try {
+            const response = await fetch('https://your-api-endpoint.com/reset-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    password: password,
+                    confirmPassword: confirmPassword,
+                }),
+            });
+
+            if (response.ok) {
+                console.log("Password reset successful");
+                onPasswordUpdated();
+            } else {
+                console.log("Password reset failed");
+                alert("Password reset failed");
+            }
+        } catch (error) {
+            console.error("Error resetting password:", error);
+            alert("An error occurred. Please try again.");
+        }
     };
 
     return (
@@ -28,7 +54,6 @@ export default function ResetPassword({ onBack, onPasswordUpdated }: ResetPasswo
                     <PasswordInput title="Confirm new password" placeHolder="Enter your new password..."></PasswordInput>
                     <RoundedButton title="CONFIRM" onPress={handleResetPassword} ></RoundedButton>
                 </View>
-                <Button title="Back" onPress={onBack} />
             </View>
         </SafeAreaView>
     );

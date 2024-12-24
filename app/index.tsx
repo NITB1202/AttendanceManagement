@@ -54,7 +54,7 @@ export default function Index() {
         <View style={styles.formContainer}>
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
-            <Input title="Email" placeHolder="Enter your email..."></Input>
+            <Input title="Email" placeHolder="Enter your email..." ></Input>
             <PasswordInput title="Password" placeHolder="Enter your password..."></PasswordInput>
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>

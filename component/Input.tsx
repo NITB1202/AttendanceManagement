@@ -1,13 +1,16 @@
 import { Text, View, TextInput, ViewStyle, StyleSheet } from "react-native";
 import { useFonts, Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { Colors } from "../constants/Colors";
+import React from "react";
 
 interface InputProps{
     title: string;
     placeHolder?: string;
+    value: string;
+    onChangeText: (text: string) => void;
     style?: ViewStyle
 }
-export default function Input({title,placeHolder,style}: InputProps){
+export default function Input({title,placeHolder,style,value,onChangeText}: InputProps){
     const [fontsLoaded] = useFonts({Roboto_400Regular});
     if(!fontsLoaded) return null;
 
@@ -17,6 +20,8 @@ export default function Input({title,placeHolder,style}: InputProps){
             <View style={[styles.inputContainer, style]}>
                 <TextInput  style={styles.input}
                             placeholder={placeHolder}
+                            value={value}
+                            onChangeText={onChangeText}
                             placeholderTextColor={Colors.hint}></TextInput>
             </View>
         </View>

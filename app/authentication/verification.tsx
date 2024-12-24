@@ -42,6 +42,32 @@ export default function Verification({ onBack, onResetPassword }: VerificationPr
         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
 
+    const handleConfirm = async () => {
+        const verificationCode = code.join('');
+        try {
+            const response = await fetch('https://your-api-endpoint.com/verify-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    code: verificationCode,
+                }),
+            });
+
+            if (response.ok) {
+                console.log("Verification successful");
+                onResetPassword();
+            } else {
+                console.log("Verification failed");
+                alert("Verification failed");
+            }
+        } catch (error) {
+            console.error("Error verifying code:", error);
+            alert("An error occurred. Please try again.");
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.partContainer}>
@@ -68,7 +94,7 @@ export default function Verification({ onBack, onResetPassword }: VerificationPr
                             <Text style={styles.resendLink}>Resend</Text>
                         </TouchableOpacity>
                     </View>
-                    <Button title="Back" onPress={onBack} />
+                    
                 </View>
             </View>
         </SafeAreaView>
