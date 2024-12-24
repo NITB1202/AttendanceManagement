@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         gap: 10,
-        width: 500,
+        width: 450,
         paddingBottom: 100,
         alignItems: 'center',
     },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RoundedButton from '@/component/RoundedButton';
+import { Colors } from "@/constants/Colors";
 
 interface VerificationProps {
     onBack: () => void;
@@ -46,7 +47,7 @@ export default function Verification({ onBack, onResetPassword }: VerificationPr
             <View style={styles.partContainer}>
                 <View style={styles.formContainer}>
                     <Text style={styles.header}>Verification</Text>
-                    <Text style={styles.notice}>Please enter the 4-digit code that you receive on your email.</Text>
+                    <Text style={styles.notice}>Enter 4-digit code that you receive on your email.</Text>
                     <View style={styles.codeContainer}>
                         {code.map((digit, index) => (
                             <TextInput
@@ -59,7 +60,7 @@ export default function Verification({ onBack, onResetPassword }: VerificationPr
                             />
                         ))}
                     </View>
-                    <Text style={styles.timerText}>Time remaining: {formatTime(timer)}</Text>
+                    <Text style={styles.timerText}> {formatTime(timer)}</Text>
                     <RoundedButton title="CONFIRM" onPress={onResetPassword} style={styles.input}></RoundedButton>
                     <View style={styles.resendContainer}>
                         <Text style={styles.resendText}>Didn't receive a code? </Text>
@@ -112,15 +113,16 @@ const styles = StyleSheet.create({
     codeInput: {
         width: 80,
         height: 80,
-        borderWidth: 1,
-        borderColor: 'gray',
+        borderWidth: 5,
+        borderColor: "#3A6D8C",
         textAlign: 'center',
         fontSize: 18,
         marginHorizontal: 5,
+        borderRadius: 10,
     },
     timerText: {
         fontFamily: "Roboto_700Bold",
-        fontSize: 20,
+        fontSize: 22,
         color: 'black',
         marginBottom: 20,
     },
@@ -136,15 +138,14 @@ const styles = StyleSheet.create({
     },
     resendText: {
         fontFamily: "Roboto_700Bold",
-        fontSize: 20,
+        fontSize: 22,
         color: 'black',
         marginBottom: 20,
     },
     resendLink: {
         fontFamily: "Roboto_700Bold",
-        fontSize: 20,
+        fontSize: 22,
         color: "#3A6D8C",
-        textDecorationLine: 'underline',
         marginBottom: 20,
     },
 });
