@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Dimensions, Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { Colors } from "@/constants/Colors";
@@ -6,38 +7,69 @@ import Input from "../component/Input";
 import PasswordInput from "../component/PasswordInput";
 import RoundedButton from "../component/RoundedButton";
 import CheckBox from "../component/CheckBox";
-
+import ForgotPassword from './authentication/forgotpassword';
+import Verification from './authentication/verification';
+import ResetPassword from './authentication/resetpassword';
+import PasswordUpdated from './authentication/passwordupdated';
 
 export default function Index() {
-  const [fontsLoaded] = useFonts({Roboto_700Bold});
+  const [fontsLoaded] = useFonts({ Roboto_700Bold });
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showVerification, setShowVerification] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [passwordUpdated, setPasswordUpdated] = useState(false);
+
   if (!fontsLoaded) return null;
 
   const { width } = Dimensions.get('window');
   const isMobileView = width < 480;
-  const containerStyle = isMobileView? [styles.partContainer, { flex: 1 }] : styles.partContainer;
-  
+  const containerStyle = isMobileView ? [styles.partContainer, { flex: 1 }] : styles.partContainer;
+
+  const handleBackToLogin = () => {
+    setShowForgotPassword(false);
+    setShowVerification(false);
+    setShowResetPassword(false);
+    setPasswordUpdated(false);
+  };
+
+  if (passwordUpdated) {
+    return <PasswordUpdated onBackToLogin={handleBackToLogin} />;
+  }
+
+  if (showResetPassword) {
+    return <ResetPassword onBack={() => setShowResetPassword(false)} onPasswordUpdated={() => setPasswordUpdated(true)} />;
+  }
+
+  if (showVerification) {
+    return <Verification onBack={() => setShowVerification(false)} onResetPassword={() => setShowResetPassword(true)} />;
+  }
+
+  if (showForgotPassword) {
+    return <ForgotPassword onBack={() => setShowForgotPassword(false)} onVerification={() => setShowVerification(true)} />;
+  }
+
   return (
-    <SafeAreaView style={styles.cotainer}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.partContainer}>
-        <View style={styles.formCotainer}>
+        <View style={styles.formContainer}>
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
             <Input title="Email" placeHolder="Enter your email..."></Input>
             <PasswordInput title="Password" placeHolder="Enter your password..."></PasswordInput>
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>
-                <CheckBox onPress={(isChecked)=>{}}></CheckBox>
+                <CheckBox onPress={(isChecked) => { }}></CheckBox>
                 <Text style={styles.text}>Remember me</Text>
               </View>
-              <TouchableHighlight>
-                  <Text style={styles.highlight}>Forgot password?</Text>
+              <TouchableHighlight onPress={() => setShowForgotPassword(true)}>
+                <Text style={styles.highlight}>Forgot password?</Text>
               </TouchableHighlight>
             </View>
           </View>
-          <RoundedButton title="SIGN IN" onPress={()=>{}}></RoundedButton>
+          <RoundedButton title="SIGN IN" onPress={() => { }}></RoundedButton>
         </View>
       </View>
-      { !isMobileView && 
+      {!isMobileView &&
         <View style={styles.partContainer}>
           <View style={styles.imageContainer}>
             <Image style={styles.formatImage} source={require('../assets/images/Login.png')} resizeMode="contain"></Image>
@@ -49,53 +81,53 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  cotainer:{
+  container: {
     flex: 1,
     flexDirection: "row"
   },
-  partContainer:{
+  partContainer: {
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
   },
-  header:{
+  header: {
     fontFamily: "Roboto_700Bold",
     fontSize: 48,
     textAlign: "center"
   },
-  inputContainer:{
+  inputContainer: {
     gap: 15
   },
-  checkBoxContainer:{
+  checkBoxContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 10,
   },
-  text:{
+  text: {
     fontFamily: "Roboto_400Regular",
     fontSize: 18,
   },
-  formCotainer:{
+  formContainer: {
     gap: 40,
     width: 400,
     paddingBottom: 100
   },
-  highlight:{
+  highlight: {
     fontSize: 18,
     fontFamily: "Roboto_700Bold",
     color: Colors.primary
   },
-  bottom:{
+  bottom: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
   },
-  formatImage:{
+  formatImage: {
     width: "100%",
     height: "100%"
   },
-  imageContainer:{
+  imageContainer: {
     width: "80%",
     height: "80%",
     overflow: "hidden"
