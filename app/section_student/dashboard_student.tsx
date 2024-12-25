@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import Layout from "../../component/Layout"; // Đường dẫn tới Layout component
 import { PieChart } from "react-native-chart-kit";
+import TableComponent from "@/component/Table";
+import Table from "@/component/Table";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -41,6 +43,12 @@ export default function DashboardStudent() {
       legendFontColor: "#000",
       legendFontSize: 12,
     },
+  ];
+
+  const tableHeader = ["NO", "DATE", "ARRIVAL TIME", "ATTENDANCE STATUS"];
+  const tableData = [
+    ["1", "12/09/2024", "09:00:00 AM", "Late"],
+    ["2", "13/09/2024", "08:00:00 AM", "On-time"],
   ];
 
   return (
@@ -165,6 +173,10 @@ export default function DashboardStudent() {
             )}
           </View>
         </View>
+
+        <View style={styles.tableContainer}>
+          <Table tableHeader={tableHeader} tableData={tableData} />
+        </View>
       </ScrollView>
     </Layout>
   );
@@ -200,6 +212,14 @@ const styles = StyleSheet.create({
     gap: 20,
     width: "30%",
     alignItems: "center",
+  },
+  tableContainer: {
+    marginBottom: 20,
+    display: "flex",
+    gap: 20,
+    width: "100%",
+    marginLeft: 40,
+    // alignItems: "center",
   },
   dropdownLabel: {
     fontSize: 20,
