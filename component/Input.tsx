@@ -1,6 +1,7 @@
 import { Text, View, TextInput, ViewStyle, StyleSheet } from "react-native";
 import { useFonts, Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { Colors } from "../constants/Colors";
+import React from "react";
 
 interface InputProps{
     title: string;

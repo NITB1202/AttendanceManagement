@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Input from "../../component/Input";
 import RoundedButton from '@/component/RoundedButton';
-import { View, Text, StyleSheet, Button, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ForgotPasswordProps {
@@ -10,23 +10,24 @@ interface ForgotPasswordProps {
 }
 
 export default function ForgotPassword({ onBack, onVerification }: ForgotPasswordProps) {
+    const [email, setEmail] = useState('');
     const { width } = Dimensions.get('window');
     const isMobileView = width < 480;
     const containerStyle = isMobileView ? [styles.partContainer, { flex: 1 }] : styles.partContainer;
+
+    
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.partContainer}>
                 <View style={styles.formContainer}>
-                    <Text style={styles.header}>Forgot Password</Text>
-                    
+                    <Text style={styles.header}>FORGOT PASSWORD</Text>
                     <View style={styles.inputContainer}>
                         <Text style={styles.notice}>Please enter your email address. You will receive</Text>
                         <Text style={styles.notice}>4 digits code via email to reset your password</Text>
-                        <Input title="Email" placeHolder="Enter your email..." style={styles.input}></Input>
+                        <Input title="Email" placeHolder="Enter your email..."  style={styles.input}></Input>
                         <RoundedButton title="CONTINUE" onPress={onVerification} style={styles.input}></RoundedButton>
-                    </View>
-                    <Button title="Back" onPress={onBack} />
+                    </View>                  
                 </View>
             </View>
             {!isMobileView &&
@@ -55,10 +56,12 @@ const styles = StyleSheet.create({
     formContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+        width: 480,
+        marginTop: 100,
     },
     header: {
         fontFamily: "Roboto_700Bold",
-        fontSize: 48,
+        fontSize: 42,
         fontWeight: 'bold',
         color: 'black',
         marginBottom: 20,
@@ -85,7 +88,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     formatImage: {
-        width: 400,
-        height: 400,
+        width: 356,
+        height: 280,
+        marginBottom: 60,
     },
 });

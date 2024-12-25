@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RoundedButton from '@/component/RoundedButton';
 import PasswordInput from '@/component/PasswordInput';
@@ -21,14 +21,13 @@ export default function ResetPassword({ onBack, onPasswordUpdated }: ResetPasswo
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.partContainer}>
+                <Text style={styles.header}>Reset Password</Text>
                 <View style={styles.formContainer}>
-                    <Text style={styles.header}>Reset Password</Text>
                     <Text style={styles.notice}>Create a new password for your account</Text>
                     <PasswordInput title="New password" placeHolder="Enter your new password..."></PasswordInput>
                     <PasswordInput title="Confirm new password" placeHolder="Enter your new password..."></PasswordInput>
                     <RoundedButton title="CONFIRM" onPress={handleResetPassword} ></RoundedButton>
                 </View>
-                <Button title="Back" onPress={onBack} />
             </View>
         </SafeAreaView>
     );
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     formContainer: {
-        gap: 10,
+        gap: 15,
         width: 400,
         paddingBottom: 100
     },
@@ -55,13 +54,13 @@ const styles = StyleSheet.create({
         fontSize: 48,
         fontWeight: 'bold',
         color: 'black',
-        marginBottom: 20,
+        marginBottom: 30,
         textAlign: 'center',
     },
     notice: {
         fontSize: 20,
         color: 'gray',
-        textAlign: 'center',
-        marginBottom: 20,
+        textAlign: 'left',
+        marginBottom: 0,
     },
 });
