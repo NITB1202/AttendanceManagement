@@ -51,12 +51,9 @@ export default function DashboardStudent() {
     ["1", "12/09/2024", "09:00:00 AM", "Late"],
     ["2", "13/09/2024", "08:00:00 AM", "On-time"],
   ];
-
   const handleSearch = (query: string) => {
-    Alert.alert("Search", `Bạn đã tìm kiếm: ${query}`);
-    console.log("Searching for:", query);
+    console.log("Từ khóa tìm kiếm:", query);
   };
-
   return (
     <Layout>
       <ScrollView contentContainerStyle={styles.dashboardContent}>
@@ -182,7 +179,11 @@ export default function DashboardStudent() {
         {/* Sử dụng SearchBar */}
 
         <View style={styles.tableContainer}>
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar
+            title="Search"
+            placeholder="Type to search..."
+            onSearch={handleSearch}
+          />
           <Table tableHeader={tableHeader} tableData={tableData} />
         </View>
       </ScrollView>
