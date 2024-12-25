@@ -15,10 +15,10 @@ import Input from "../component/Input";
 import PasswordInput from "../component/PasswordInput";
 import RoundedButton from "../component/RoundedButton";
 import CheckBox from "../component/CheckBox";
-import ForgotPassword from './authentication/forgotpassword';
-import Verification from './authentication/verification';
-import ResetPassword from './authentication/resetpassword';
-import PasswordUpdated from './authentication/passwordupdated';
+import ForgotPassword from "./authentication/forgotpassword";
+import Verification from "./authentication/verification";
+import ResetPassword from "./authentication/resetpassword";
+import PasswordUpdated from "./authentication/passwordupdated";
 
 export default function Index() {
   const [fontsLoaded] = useFonts({ Roboto_700Bold });
@@ -29,9 +29,11 @@ export default function Index() {
 
   if (!fontsLoaded) return null;
 
-  const { width } = Dimensions.get('window');
+  const { width } = Dimensions.get("window");
   const isMobileView = width < 480;
-  const containerStyle = isMobileView ? [styles.partContainer, { flex: 1 }] : styles.partContainer;
+  const containerStyle = isMobileView
+    ? [styles.partContainer, { flex: 1 }]
+    : styles.partContainer;
 
   const handleBackToLogin = () => {
     setShowForgotPassword(false);
@@ -45,15 +47,30 @@ export default function Index() {
   }
 
   if (showResetPassword) {
-    return <ResetPassword onBack={() => setShowResetPassword(false)} onPasswordUpdated={() => setPasswordUpdated(true)} />;
+    return (
+      <ResetPassword
+        onBack={() => setShowResetPassword(false)}
+        onPasswordUpdated={() => setPasswordUpdated(true)}
+      />
+    );
   }
 
   if (showVerification) {
-    return <Verification onBack={() => setShowVerification(false)} onResetPassword={() => setShowResetPassword(true)} />;
+    return (
+      <Verification
+        onBack={() => setShowVerification(false)}
+        onResetPassword={() => setShowResetPassword(true)}
+      />
+    );
   }
 
   if (showForgotPassword) {
-    return <ForgotPassword onBack={() => setShowForgotPassword(false)} onVerification={() => setShowVerification(true)} />;
+    return (
+      <ForgotPassword
+        onBack={() => setShowForgotPassword(false)}
+        onVerification={() => setShowVerification(true)}
+      />
+    );
   }
 
   return (
@@ -62,11 +79,12 @@ export default function Index() {
         <View style={styles.formContainer}>
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
+
             <Input title="Email" placeHolder="Enter your email..." ></Input>
             <PasswordInput title="Password" placeHolder="Enter your password..."></PasswordInput>
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>
-                <CheckBox onPress={(isChecked) => { }}></CheckBox>
+                <CheckBox onPress={(isChecked) => {}}></CheckBox>
                 <Text style={styles.text}>Remember me</Text>
               </View>
               <TouchableHighlight onPress={() => setShowForgotPassword(true)}>
@@ -74,16 +92,25 @@ export default function Index() {
               </TouchableHighlight>
             </View>
           </View>
-          <RoundedButton title="SIGN IN" onPress={() => { }}></RoundedButton>
+          <RoundedButton
+            title="SIGN IN"
+            onPress={() => {
+              router.push("/section_student/dashboard_student");
+            }}
+          ></RoundedButton>
         </View>
       </View>
-      {!isMobileView &&
+      {!isMobileView && (
         <View style={styles.partContainer}>
           <View style={styles.imageContainer}>
-            <Image style={styles.formatImage} source={require('../assets/images/Login.png')} resizeMode="contain"></Image>
+            <Image
+              style={styles.formatImage}
+              source={require("../assets/images/Login.png")}
+              resizeMode="contain"
+            ></Image>
           </View>
         </View>
-      }
+      )}
     </SafeAreaView>
   );
 }
@@ -91,7 +118,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   partContainer: {
     width: "50%",
@@ -101,10 +128,10 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: "Roboto_700Bold",
     fontSize: 48,
-    textAlign: "center"
+    textAlign: "center",
   },
   inputContainer: {
-    gap: 15
+    gap: 15,
   },
   checkBoxContainer: {
     flexDirection: "row",
@@ -119,25 +146,25 @@ const styles = StyleSheet.create({
   formContainer: {
     gap: 40,
     width: 400,
-    paddingBottom: 100
+    paddingBottom: 100,
   },
   highlight: {
     fontSize: 18,
     fontFamily: "Roboto_700Bold",
-    color: Colors.primary
+    color: Colors.primary,
   },
   bottom: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   formatImage: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   imageContainer: {
     width: "80%",
     height: "80%",
-    overflow: "hidden"
-  }
+    overflow: "hidden",
+  },
 });
