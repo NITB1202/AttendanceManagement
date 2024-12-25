@@ -6,11 +6,9 @@ import React from "react";
 interface InputProps{
     title: string;
     placeHolder?: string;
-    value: string;
-    onChangeText: (text: string) => void;
     style?: ViewStyle
 }
-export default function Input({title,placeHolder,style,value,onChangeText}: InputProps){
+export default function Input({title,placeHolder,style}: InputProps){
     const [fontsLoaded] = useFonts({Roboto_400Regular});
     if(!fontsLoaded) return null;
 
@@ -20,8 +18,6 @@ export default function Input({title,placeHolder,style,value,onChangeText}: Inpu
             <View style={[styles.inputContainer, style]}>
                 <TextInput  style={styles.input}
                             placeholder={placeHolder}
-                            value={value}
-                            onChangeText={onChangeText}
                             placeholderTextColor={Colors.hint}></TextInput>
             </View>
         </View>

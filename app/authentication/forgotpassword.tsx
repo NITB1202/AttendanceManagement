@@ -25,7 +25,7 @@ export default function ForgotPassword({ onBack, onVerification }: ForgotPasswor
                     <View style={styles.inputContainer}>
                         <Text style={styles.notice}>Please enter your email address. You will receive</Text>
                         <Text style={styles.notice}>4 digits code via email to reset your password</Text>
-                        <Input title="Email" placeHolder="Enter your email..." value={email} onChangeText={setEmail} style={styles.input}></Input>
+                        <Input title="Email" placeHolder="Enter your email..."  style={styles.input}></Input>
                         <RoundedButton title="CONTINUE" onPress={onVerification} style={styles.input}></RoundedButton>
                     </View>                  
                 </View>

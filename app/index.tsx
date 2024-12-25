@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+} from "react-native";
 import { router } from "expo-router";
-import { Dimensions, Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { Colors } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -55,7 +62,7 @@ export default function Index() {
         <View style={styles.formContainer}>
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
-            <Input title="Email" placeHolder="Enter your email..." value="" onChangeText={() => {}} ></Input>
+            <Input title="Email" placeHolder="Enter your email..." ></Input>
             <PasswordInput title="Password" placeHolder="Enter your password..."></PasswordInput>
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>
