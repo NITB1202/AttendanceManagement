@@ -13,35 +13,9 @@ export default function ResetPassword({ onBack, onPasswordUpdated }: ResetPasswo
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleResetPassword = async () => {
-        if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-        }
-
-        try {
-            const response = await fetch('https://your-api-endpoint.com/reset-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    password: password,
-                    confirmPassword: confirmPassword,
-                }),
-            });
-
-            if (response.ok) {
-                console.log("Password reset successful");
-                onPasswordUpdated();
-            } else {
-                console.log("Password reset failed");
-                alert("Password reset failed");
-            }
-        } catch (error) {
-            console.error("Error resetting password:", error);
-            alert("An error occurred. Please try again.");
-        }
+    const handleResetPassword = () => {
+        console.log("Password reset");
+        onPasswordUpdated();
     };
 
     return (
