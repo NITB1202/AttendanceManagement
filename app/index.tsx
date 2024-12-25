@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableHighlight,
 } from "react-native";
+import { router } from "expo-router";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { Colors } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -93,7 +94,12 @@ export default function Index() {
               </TouchableHighlight>
             </View>
           </View>
-          <RoundedButton title="SIGN IN" onPress={() => {}}></RoundedButton>
+          <RoundedButton
+            title="SIGN IN"
+            onPress={() => {
+              router.push("/section_student/dashboard_student");
+            }}
+          ></RoundedButton>
         </View>
       </View>
       {!isMobileView && (
