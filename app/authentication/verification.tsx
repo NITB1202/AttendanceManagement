@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
   partContainer: {
     flex: 1,
@@ -134,10 +133,10 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: "bold",
     color: "black",
-    marginBottom: 20,
+    marginBottom: 30,
   },
   notice: {
-    fontFamily: "Roboto_700Bold",
+    fontFamily: "Roboto_400Regular",
     fontSize: 20,
     color: "gray",
     textAlign: "center",
@@ -175,7 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   resendText: {
-    fontFamily: "Roboto_700Bold",
+    fontFamily: "Roboto_400Regular",
     fontSize: 22,
     color: "black",
     marginBottom: 20,
