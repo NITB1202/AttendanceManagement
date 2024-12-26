@@ -8,7 +8,7 @@ export default function ResetPassword() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.partContainer}>
-        <Text style={styles.header}>Reset Password</Text>
+        <Text style={styles.header}>RESET PASSWORD</Text>
         <View style={styles.formContainer}>
           <Text style={styles.notice}>
             Create a new password for your account
@@ -18,7 +18,7 @@ export default function ResetPassword() {
             placeHolder="Enter your new password..."
           />
           <PasswordInput
-            title="Confirm new password"
+            title="Confirm password"
             placeHolder="Enter your new password..."
           />
           <RoundedButton
@@ -46,18 +46,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   formContainer: {
-    gap: 15,
+    gap: 20,
     width: 400,
     paddingBottom: 100,
   },
   header: {
+    fontFamily: "Roboto_700Bold",
     fontSize: 48,
     fontWeight: "bold",
     color: "black",
     marginBottom: 30,
-    textAlign: "center",
   },
   notice: {
+    fontFamily: "Roboto_400Regular",
     fontSize: 20,
     color: "gray",
     textAlign: "left",

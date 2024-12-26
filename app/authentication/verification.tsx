@@ -77,7 +77,7 @@ export default function Verification() {
     <SafeAreaView style={styles.container}>
       <View style={styles.partContainer}>
         <View style={styles.formContainer}>
-          <Text style={styles.header}>Verification</Text>
+          <Text style={styles.header}>VERIFICATION</Text>
           <Text style={styles.notice}>
             Enter 4-digit code that you receive on your email.
           </Text>
