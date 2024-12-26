@@ -21,6 +21,61 @@ export default function DashboardTeacher() {
         value: number;
     } | null>(null);
 
+    const pieData1 = [
+        {
+            name: "Well",
+            population: 3,
+            color: "#EF1F1F",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+        {
+            name: "Normal",
+            population: 2,
+            color: "#FFC038",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+        {
+            name: "Not well",
+            population: 2,
+            color: "#6A9AB0",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+        {
+            name: "Bad",
+            population: 3,
+            color: "#00B01A",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+    ];
+
+    const pieData2 = [
+        {
+            name: "On-time",
+            population: 5,
+            color: "#EF1F1F",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+        {
+            name: "Absence",
+            population: 3,
+            color: "#FFC038",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+        {
+            name: "Late",
+            population: 1,
+            color: "#6A9AB0",
+            legendFontColor: "#000",
+            legendFontSize: 12,
+        },
+    ];
+
     return (
         <Layout>
             <ScrollView contentContainerStyle={styles.dashboardContent}>
@@ -53,6 +108,13 @@ export default function DashboardTeacher() {
                     <View style={styles.infoContainer}>
                         <View style={styles.infoBoxSmall}>
                             <Text style={styles.infoLabel}>Respond Received</Text>
+                            <View style={styles.infoContent}>
+                                <Image
+                                    source={require('../../assets/images/response-receive.png')}
+                                    style={styles.infoImage}
+                                />
+                                <Text style={styles.infoNumber}>48</Text>
+                            </View>
                             <Text style={styles.infoNumber}>48</Text>
                         </View>
                         <View style={styles.infoBoxLarge}>
@@ -60,9 +122,58 @@ export default function DashboardTeacher() {
                             <Text style={styles.infoNumber}>72%</Text>
                         </View>
                     </View>
-                    <View style={styles.piechartContainer}>
+                    <View style={styles.pieChartContainer}>
                         <View style={styles.largeInfoBox}>
-                            <Text style={styles.infoLabel}>Additional Information</Text>
+                            <View style={styles.halfBox}>
+                                <Text style={styles.infoLabel}>Student's understanding level</Text>
+                                <View style={styles.right}>
+                                            <PieChart
+                                              data={pieData1}
+                                              width={screenWidth * 0.45} 
+                                              height={220}
+                                              chartConfig={{
+                                                backgroundColor: "#fff",
+                                                backgroundGradientFrom: "#fff",
+                                                backgroundGradientTo: "#fff",
+                                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                              }}
+                                              accessor="population"
+                                              backgroundColor="transparent"
+                                              paddingLeft="15"
+                                              absolute
+                                            />
+                                            {selectedSlice && (
+                                              <View style={styles.tooltip}>
+                                                <Text
+                                                  style={{
+                                                    color: pieData1.find((p) => p.name === selectedSlice.label)
+                                                      ?.color,
+                                                  }}
+                                                >
+                                                  {`${selectedSlice.label}: ${selectedSlice.value}`}
+                                                </Text>
+                                              </View>
+                                            )}
+                                          </View>
+                            </View>
+                            <View style={styles.halfBox}>
+                                <Text style={styles.infoLabel}>Presence Rate</Text>
+                                <PieChart
+                                    data={pieData2}
+                                    width={screenWidth * 0.45}
+                                    height={220}
+                                    chartConfig={{
+                                        backgroundColor: "#fff",
+                                        backgroundGradientFrom: "#fff",
+                                        backgroundGradientTo: "#fff",
+                                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                    }}
+                                    accessor="population"
+                                    backgroundColor="transparent"
+                                    paddingLeft="15"
+                                    absolute
+                                />
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -127,6 +238,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 170,
     },
+    infoContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    infoImage: {
+        width: 72,
+        height: 72,
+        marginRight: 10,
+    },
     infoLabel: {
         fontSize: 16,
         fontWeight: 'bold',
@@ -142,7 +262,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 170,
     },
-    piechartContainer: {
+    pieChartContainer: {
         marginTop: 20,
         width: '100%',
         alignItems: 'flex-start',
@@ -154,13 +274,31 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginHorizontal: 10,
         borderRadius: 10,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         height: 410,
         width: '96%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    halfBox: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginBottom: 100,
     },
     infoNumber: {
         fontSize: 64,
         fontWeight: 'bold',
         color: 'white',
+    },
+    right: {
+        flex: 4,
+        width: "100%",
+        alignItems: "center", 
+    },
+    tooltip: {
+        marginTop: 10,
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });
