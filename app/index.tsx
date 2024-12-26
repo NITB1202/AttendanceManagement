@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  Dimensions,
   Image,
   Text,
   View,
   StyleSheet,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import { router } from "expo-router";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
@@ -15,63 +15,54 @@ import Input from "../component/Input";
 import PasswordInput from "../component/PasswordInput";
 import RoundedButton from "../component/RoundedButton";
 import CheckBox from "../component/CheckBox";
-import ForgotPassword from "./authentication/forgotpassword";
-import Verification from "./authentication/verification";
-import ResetPassword from "./authentication/resetpassword";
-import PasswordUpdated from "./authentication/passwordupdated";
+import { useAuth } from "../context/AuthContext";
+import { Role } from "../context/AuthContext";
 
 export default function Index() {
+  const { onLogin } = useAuth(); // Lấy hàm login từ AuthContext
   const [fontsLoaded] = useFonts({ Roboto_700Bold });
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showVerification, setShowVerification] = useState(false);
-  const [showResetPassword, setShowResetPassword] = useState(false);
-  const [passwordUpdated, setPasswordUpdated] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   if (!fontsLoaded) return null;
 
-  const { width } = Dimensions.get("window");
-  const isMobileView = width < 480;
-  const containerStyle = isMobileView
-    ? [styles.partContainer, { flex: 1 }]
-    : styles.partContainer;
+  const handleLogin = () => {
+    if (!onLogin) {
+      console.error("onLogin is undefined. Please check AuthProvider.");
+      return;
+    }
 
-  const handleBackToLogin = () => {
-    setShowForgotPassword(false);
-    setShowVerification(false);
-    setShowResetPassword(false);
-    setPasswordUpdated(false);
+    // Gọi hàm onLogin
+    onLogin(email, password);
+
+    // Lấy trạng thái từ AuthContext
+    const { authState } = useAuth();
+
+    // Kiểm tra nếu authState không được định nghĩa
+    if (!authState) {
+      console.error("authState is undefined. Please check AuthProvider.");
+      return;
+    }
+
+    const { authenticated, role } = authState;
+
+    if (authenticated) {
+      if (role === Role.MANAGER) {
+        router.push("/section_manager/dashboard_manager");
+      } else if (role === Role.TEACHER) {
+        router.push("/section_teacher/dashboard_teacher");
+      } else if (role === Role.STUDENT) {
+        router.push("/section_student/dashboard_student");
+      } else {
+        console.error("Unknown role detected.");
+      }
+    } else {
+      Alert.alert(
+        "Login Failed",
+        "Invalid username or password. Please try again."
+      );
+    }
   };
-
-  if (passwordUpdated) {
-    return <PasswordUpdated onBackToLogin={handleBackToLogin} />;
-  }
-
-  if (showResetPassword) {
-    return (
-      <ResetPassword
-        onBack={() => setShowResetPassword(false)}
-        onPasswordUpdated={() => setPasswordUpdated(true)}
-      />
-    );
-  }
-
-  if (showVerification) {
-    return (
-      <Verification
-        onBack={() => setShowVerification(false)}
-        onResetPassword={() => setShowResetPassword(true)}
-      />
-    );
-  }
-
-  if (showForgotPassword) {
-    return (
-      <ForgotPassword
-        onBack={() => setShowForgotPassword(false)}
-        onVerification={() => setShowVerification(true)}
-      />
-    );
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,15 +70,21 @@ export default function Index() {
         <View style={styles.formContainer}>
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
-
-            <Input title="Email" placeHolder="Enter your email..." ></Input>
-            <PasswordInput title="Password" placeHolder="Enter your password..."></PasswordInput>
+            <Input title="Email" placeHolder="Enter your email..." />
+            <PasswordInput
+              title="Password"
+              placeHolder="Enter your password..."
+            />
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>
                 <CheckBox onPress={(isChecked) => {}}></CheckBox>
                 <Text style={styles.text}>Remember me</Text>
               </View>
-              <TouchableHighlight onPress={() => setShowForgotPassword(true)}>
+              <TouchableHighlight
+                onPress={() => {
+                  router.push("/authentication/forgotpassword");
+                }}
+              >
                 <Text style={styles.highlight}>Forgot password?</Text>
               </TouchableHighlight>
             </View>
@@ -97,20 +94,18 @@ export default function Index() {
             onPress={() => {
               router.push("/section_student/dashboard_student");
             }}
-          ></RoundedButton>
+          />
         </View>
       </View>
-      {!isMobileView && (
-        <View style={styles.partContainer}>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.formatImage}
-              source={require("../assets/images/Login.png")}
-              resizeMode="contain"
-            ></Image>
-          </View>
+      <View style={styles.partContainer}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.formatImage}
+            source={require("../assets/images/Login.png")}
+            resizeMode="contain"
+          />
         </View>
-      )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -121,7 +116,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   partContainer: {
-    width: "50%",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -145,7 +140,8 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     gap: 40,
-    width: 400,
+    width: "80%",
+    maxWidth: 400,
     paddingBottom: 100,
   },
   highlight: {

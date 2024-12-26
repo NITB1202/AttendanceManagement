@@ -1,24 +1,12 @@
 import React, { useState } from "react";
 import Input from "../../component/Input";
 import RoundedButton from "@/component/RoundedButton";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
-interface ForgotPasswordProps {
-  onBack: () => void;
-  onVerification: () => void;
-}
-
-export default function ForgotPassword({
-  onBack,
-  onVerification,
-}: ForgotPasswordProps) {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const { width } = Dimensions.get("window");
-  const isMobileView = width < 480;
-  const containerStyle = isMobileView
-    ? [styles.partContainer, { flex: 1 }]
-    : styles.partContainer;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,26 +24,24 @@ export default function ForgotPassword({
               title="Email"
               placeHolder="Enter your email..."
               style={styles.input}
-            ></Input>
+            />
             <RoundedButton
               title="CONTINUE"
-              onPress={onVerification}
+              onPress={() => {
+                router.push("/authentication/verification");
+              }}
               style={styles.input}
-            ></RoundedButton>
-          </View>
-        </View>
-      </View>
-      {!isMobileView && (
-        <View style={styles.partContainer}>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.formatImage}
-              source={require("../../assets/images/ForgotPassword.png")}
-              resizeMode="contain"
             />
           </View>
         </View>
-      )}
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.formatImage}
+            source={require("../../assets/images/ForgotPassword.png")}
+            resizeMode="contain"
+          />
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -65,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: 30,
   },
   partContainer: {
     flex: 1,
