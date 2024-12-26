@@ -16,7 +16,7 @@ function Navbar() {
       setActiveItem("Class");
     } else if (pathname.includes("attendance")) {
       setActiveItem("Attendance");
-    } else if (pathname.includes("roll_call")) {
+    } else if (pathname.includes("rollcall_student")) {
       setActiveItem("RollCall");
     } else {
       setActiveItem(null); // Nếu không khớp đường dẫn nào
@@ -38,7 +38,7 @@ function Navbar() {
         router.push("/");
         break;
       case "RollCall":
-        router.push("/");
+        router.push("/section_student/rollcall_student");
         break;
       default:
         router.push("/");
