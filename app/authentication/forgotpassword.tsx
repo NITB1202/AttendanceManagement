@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   imageContainer: {
-    marginTop: 20,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
   },
