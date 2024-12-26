@@ -10,37 +10,33 @@ export default function ForgotPassword() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.partContainer}>
-        <View style={styles.formContainer}>
-          <Text style={styles.header}>FORGOT PASSWORD</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.notice}>
-              Please enter your email address. You will receive
-            </Text>
-            <Text style={styles.notice}>
-              4 digits code via email to reset your password
-            </Text>
-            <Input
-              title="Email"
-              placeHolder="Enter your email..."
-              style={styles.input}
-            />
-            <RoundedButton
-              title="CONTINUE"
-              onPress={() => {
-                router.push("/authentication/verification");
-              }}
-              style={styles.input}
-            />
-          </View>
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.formatImage}
-            source={require("../../assets/images/ForgotPassword.png")}
-            resizeMode="contain"
+      <View style={styles.formContainer}>
+        <Text style={styles.header}>FORGOT PASSWORD</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.notice}>
+            Please enter your email address. You will receive 4 digits code via
+            email to reset your password
+          </Text>
+          <Input
+            title="Email"
+            placeHolder="Enter your email..."
+            style={styles.input}
+          />
+          <RoundedButton
+            title="CONTINUE"
+            onPress={() => {
+              router.push("/authentication/verification");
+            }}
+            style={styles.input}
           />
         </View>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.formatImage}
+          source={require("../../assets/images/ForgotPassword.png")}
+          resizeMode="contain"
+        />
       </View>
     </SafeAreaView>
   );
@@ -51,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 30,
+    flexDirection: "column",
   },
   partContainer: {
     flex: 1,
@@ -66,17 +62,17 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: "Roboto_700Bold",
-    fontSize: 42,
+    fontSize: 48,
     fontWeight: "bold",
     color: "black",
-    marginBottom: 20,
+    paddingBottom: 20,
   },
   notice: {
-    fontFamily: "Roboto_700Bold",
+    fontFamily: "Roboto_400Regular",
     fontSize: 20,
     color: "#959595",
     textAlign: "left",
-    marginBottom: 10,
+    marginBottom: 30,
   },
   inputContainer: {
     width: "100%",
