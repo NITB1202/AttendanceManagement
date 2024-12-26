@@ -1,102 +1,70 @@
 import React from "react";
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   TextInput,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import Layout from "../../component/Layout"; // Import Layout component
+import TableComponent from "../../component/Table"; // Import TableComponent của bạn
+import SearchBar from "@/component/SearchBar";
 
+const handleSearch = (query: string) => {
+  console.log("Từ khóa tìm kiếm:", query);
+};
 const ClassStudent = () => {
+  const tableHeader = [
+    "CLASS NAME",
+    "COURSE NAME",
+    "START DATE",
+    "END DATE",
+    "START TIME",
+    "END TIME",
+    "TEACHER NAME",
+  ];
+
+  const tableData = [
+    [
+      "M120.P22",
+      "MATH BASIC",
+      "01/06/2024",
+      "01/09/2024",
+      "07:00 AM",
+      "10:30 AM",
+      "Luwid Mathra",
+    ],
+  ];
+
   return (
     <Layout>
-      <View style={styles.container}>
-        {/* Sidebar */}
-        <View style={styles.sidebar}>
-          <TouchableOpacity style={[styles.tab, styles.activeTab]}>
-            <Text style={styles.tabText}>General</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tab}>
-            <Text style={styles.tabText}>Session</Text>
-          </TouchableOpacity>
+      <ScrollView style={styles.container}>
+        {/* Search and Filter Section */}
+        <View style={styles.searchContainer}>
+          <SearchBar
+            title="Search"
+            placeholder="Type to search..."
+            onSearch={handleSearch}
+          />
 
-          <ScrollView>
-            {["14/05/2024", "21/05/2024", "28/05/2024"].map((date, index) => (
-              <TouchableOpacity key={index} style={styles.dateItem}>
-                <Text style={styles.dateText}>{date}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Main Content */}
-        <View style={styles.mainContent}>
-          {/* Roll Caller Information */}
-          <View style={styles.infoContainer}>
-            <Text style={styles.infoText}>
-              <Text style={styles.bold}>Roll caller name:</Text> Jack Tarco
-            </Text>
-            <Text style={styles.infoText}>
-              <Text style={styles.bold}>Student code:</Text> SV23821749
-            </Text>
-          </View>
-
-          {/* Attendance Status */}
-          <View style={styles.attendanceContainer}>
-            <Text style={styles.sectionTitle}>Student attendance status</Text>
-            <View style={styles.table}>
-              <View style={[styles.tableRow, styles.tableHeader]}>
-                <Text style={[styles.tableCell, styles.headerCell]}>ORDER</Text>
-                <Text style={[styles.tableCell, styles.headerCell]}>
-                  STUDENT CODE
-                </Text>
-                <Text style={[styles.tableCell, styles.headerCell]}>
-                  STUDENT NAME
-                </Text>
-                <Text style={[styles.tableCell, styles.headerCell]}>
-                  ATTENDANCE STATUS
-                </Text>
-              </View>
-              <View style={styles.tableRow}>
-                <Text style={styles.tableCell}>1</Text>
-                <Text style={styles.tableCell}>SV232348423</Text>
-                <Text style={styles.tableCell}>Karma Sik</Text>
-                <Text style={styles.tableCell}>On-time</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Discussion Section */}
-          <View style={styles.discussionContainer}>
-            <Text style={styles.sectionTitle}>Discussion</Text>
-            <View style={styles.comment}>
-              <Text style={styles.commentAuthor}>
-                Anonymous <Text style={styles.commentDate}>01/01/2004</Text>
-              </Text>
-              <Text style={styles.commentText}>Hello!</Text>
-              <TouchableOpacity style={styles.replyButton}>
-                <Text style={styles.replyButtonText}>Reply</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.addNewContainer}>
-              <TextInput
-                placeholder="Write your question here..."
-                style={styles.input}
-              />
-              <View style={styles.buttonRow}>
-                <TouchableOpacity style={styles.cancelButton}>
-                  <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.postButton}>
-                  <Text style={styles.buttonText}>Post</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+          <View style={styles.dropdownContainer}>
+            <select
+              style={styles.dropdownInput}
+              onChange={(e) => console.log(e.target.value)} // Xử lý sự kiện thay đổi giá trị
+            >
+              <option value="SE103.022">Class name</option>
+              <option value="SE104.023">Course name</option>
+              <option value="SE105.024">Teacher name</option>
+            </select>
           </View>
         </View>
-      </View>
+
+        {/* Table Section */}
+        <View style={styles.tableContainer}>
+          <TableComponent tableHeader={tableHeader} tableData={tableData} />
+        </View>
+      </ScrollView>
     </Layout>
   );
 };
@@ -105,144 +73,40 @@ export default ClassStudent;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    padding: 10,
+  },
+  searchContainer: {
     flexDirection: "row",
-  },
-  sidebar: {
-    width: 120,
-    backgroundColor: "#001F3F",
-    padding: 10,
-  },
-  tab: {
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
-  },
-  activeTab: {
-    backgroundColor: "#3A6D8C",
-  },
-  tabText: {
-    color: "#fff",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  dateItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
-  },
-  dateText: {
-    color: "#fff",
-    textAlign: "center",
-  },
-  mainContent: {
-    flex: 1,
-    padding: 10,
-  },
-  infoContainer: {
-    marginBottom: 10,
-  },
-  infoText: {
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  bold: {
-    fontWeight: "bold",
-  },
-  attendanceContainer: {
     marginBottom: 20,
+    height: 40,
   },
-  sectionTitle: {
+  searchInput: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
+  dropdownContainer: {
+    marginVertical: 0,
+    paddingLeft: 20,
+    height: 37,
+  },
+  dropdownLabel: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 10,
-  },
-  table: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
-  tableRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  tableHeader: {
-    backgroundColor: "#f0f0f0",
-  },
-  tableCell: {
-    flex: 1,
-    padding: 5,
-    textAlign: "center",
-    fontSize: 14,
-  },
-  headerCell: {
-    fontWeight: "bold",
-  },
-  discussionContainer: {
-    marginTop: 20,
-  },
-  comment: {
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    paddingBottom: 5,
-  },
-  commentAuthor: {
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  commentDate: {
-    fontWeight: "normal",
-    fontSize: 12,
-    color: "#555",
-  },
-  commentText: {
-    fontSize: 14,
-    marginVertical: 5,
-  },
-  replyButton: {
-    backgroundColor: "#3A6D8C",
-    padding: 5,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 5,
-  },
-  replyButtonText: {
-    color: "#fff",
-    fontSize: 14,
-  },
-  addNewContainer: {
-    marginTop: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  cancelButton: {
-    backgroundColor: "#d9534f",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    flex: 1,
     marginRight: 10,
   },
-  postButton: {
-    backgroundColor: "#28a745",
-    padding: 10,
+  dropdownInput: {
+    height: 40,
     borderRadius: 5,
-    alignItems: "center",
-    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    paddingHorizontal: 10,
+    backgroundColor: "#fff",
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 14,
+  tableContainer: {
+    marginTop: 20,
   },
 });

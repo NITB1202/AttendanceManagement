@@ -11,7 +11,6 @@ import {
 import Layout from "../../component/Layout"; // Đường dẫn tới Layout component
 import { PieChart } from "react-native-chart-kit";
 import Table from "@/component/Table";
-import SearchBar from "@/component/SearchBar";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -179,11 +178,6 @@ export default function DashboardStudent() {
         {/* Sử dụng SearchBar */}
 
         <View style={styles.tableContainer}>
-          <SearchBar
-            title="Search"
-            placeholder="Type to search..."
-            onSearch={handleSearch}
-          />
           <Table tableHeader={tableHeader} tableData={tableData} />
         </View>
       </ScrollView>
@@ -267,6 +261,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 87,
     gap: 60,
+    paddingBottom: 60,
   },
   summaryContainer: {
     flex: 4,

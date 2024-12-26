@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
   container: {
     alignContent: "flex-start",
     gap: 10,
-    width: "40%",
+    width: "33%",
+    height: "100%",
   },
   title: {
     fontFamily: "Roboto_400Regular",
