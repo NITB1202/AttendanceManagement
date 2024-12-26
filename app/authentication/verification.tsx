@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "gray",
     textAlign: "center",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   codeContainer: {
     flexDirection: "row",
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 30,
   },
   resendText: {
     fontFamily: "Roboto_400Regular",
