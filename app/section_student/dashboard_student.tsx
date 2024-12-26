@@ -1,95 +1,184 @@
-import React from "react";
-import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
-import { PieChart } from "react-native-chart-kit";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Dimensions,
+  Image,
+  Alert,
+} from "react-native";
 import Layout from "../../component/Layout"; // Đường dẫn tới Layout component
-import { Ionicons } from "@expo/vector-icons";
+import { PieChart } from "react-native-chart-kit";
+import Table from "@/component/Table";
 
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 export default function DashboardStudent() {
+  const [selectedSlice, setSelectedSlice] = useState<{
+    label: string;
+    value: number;
+  } | null>(null);
+
   const pieData = [
     {
       name: "On-time",
       population: 3,
-      color: "#ff0000",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
+      color: "#EF1F1F",
+      legendFontColor: "#000",
+      legendFontSize: 12,
     },
     {
       name: "Late",
       population: 2,
-      color: "#ffcc00",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
+      color: "#FFC038",
+      legendFontColor: "#000",
+      legendFontSize: 12,
     },
     {
       name: "Absence",
       population: 2,
-      color: "#007FFF",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
+      color: "#6A9AB0",
+      legendFontColor: "#000",
+      legendFontSize: 12,
     },
   ];
 
+  const tableHeader = ["NO", "DATE", "ARRIVAL TIME", "ATTENDANCE STATUS"];
+  const tableData = [
+    ["1", "12/09/2024", "09:00:00 AM", "Late"],
+    ["2", "13/09/2024", "08:00:00 AM", "On-time"],
+  ];
+  const handleSearch = (query: string) => {
+    console.log("Từ khóa tìm kiếm:", query);
+  };
   return (
     <Layout>
       <ScrollView contentContainerStyle={styles.dashboardContent}>
-        <Text style={styles.title}>Attendance Status</Text>
+        {/* Dropdown  */}
+        <View style={styles.dropdownContainer}>
+          <Text style={styles.dropdownLabel}>Class</Text>
+          <select
+            style={styles.dropdownInput}
+            onChange={(e) => console.log(e.target.value)}
+          >
+            <option value="SE103.022">SE103.022</option>
+            <option value="SE104.023">SE104.023</option>
+            <option value="SE105.024">SE105.024</option>
+          </select>
+        </View>
 
         {/* Container for Summary and PieChart */}
         <View style={styles.rowContainer}>
           {/* Summary - Display as table */}
           <View style={styles.summaryContainer}>
-            <View style={styles.row}>
-              <View style={[styles.summaryBox, { backgroundColor: "#7BAFD4" }]}>
-                <Ionicons name="time-outline" size={24} color="#fff" />
-                <Text style={styles.summaryTitle}>Number of lateness</Text>
-                <Text style={styles.summaryValue}>3</Text>
+            <View style={styles.rowGen}>
+              <View style={styles.sumLeft}>
+                <View
+                  style={[styles.summaryBox, { backgroundColor: "#6A9AB0" }]}
+                >
+                  <Text style={styles.summaryTitle}>Number of lateness</Text>
+                  <View style={styles.row}>
+                    <Image
+                      source={require("../../assets/images/icon/alarm.png")}
+                      style={styles.image}
+                    />
+                    <Text style={styles.summaryValue}>3</Text>
+                  </View>
+                </View>
               </View>
-              <View style={[styles.summaryBox, { backgroundColor: "#F5BE40" }]}>
-                <Ionicons name="alert-circle-outline" size={24} color="#fff" />
-                <Text style={styles.summaryTitle}>
-                  Maximum allowed lateness
-                </Text>
-                <Text style={styles.summaryValue}>6</Text>
+              <View style={styles.sumRight}>
+                <View
+                  style={[styles.summaryBox, { backgroundColor: "#FFC038" }]}
+                >
+                  <Text style={styles.summaryTitle}>
+                    Maximum allowed lateness
+                  </Text>
+                  <View style={styles.row}>
+                    <Image
+                      source={require("../../assets/images/icon/warning-circle.png")}
+                      style={styles.image}
+                    />
+                    <Text style={styles.summaryValue}>6</Text>
+                  </View>
+                </View>
               </View>
             </View>
-            <View style={styles.row}>
-              <View style={[styles.summaryBox, { backgroundColor: "#4CAF50" }]}>
-                <Ionicons name="person-outline" size={24} color="#fff" />
-                <Text style={styles.summaryTitle}>Number of absences</Text>
-                <Text style={styles.summaryValue}>2</Text>
+
+            {/* -------------------------------row2------------------ */}
+            <View style={styles.rowGen}>
+              <View style={styles.sumLeft}>
+                <View
+                  style={[styles.summaryBox, { backgroundColor: "#00B01A" }]}
+                >
+                  <Text style={styles.summaryTitle}>Number of absences</Text>
+                  <View style={styles.row}>
+                    <Image
+                      source={require("../../assets/images/icon/user-warning.png")}
+                      style={styles.image}
+                    />
+                    <Text style={styles.summaryValue}>2</Text>
+                  </View>
+                </View>
               </View>
-              <View style={[styles.summaryBox, { backgroundColor: "#F44336" }]}>
-                <Ionicons name="person-remove-outline" size={24} color="#fff" />
-                <Text style={styles.summaryTitle}>
-                  Maximum allowed absences
-                </Text>
-                <Text style={styles.summaryValue}>4</Text>
+              <View style={styles.sumRight}>
+                <View
+                  style={[styles.summaryBox, { backgroundColor: "#EF1F1F" }]}
+                >
+                  <Text style={styles.summaryTitle}>
+                    Maximum allowed absences
+                  </Text>
+                  <View style={styles.row}>
+                    <Image
+                      source={require("../../assets/images/icon/user-cross.png")}
+                      style={styles.image}
+                    />
+
+                    <Text style={styles.summaryValue}>4</Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
 
           {/* PieChart */}
-          <PieChart
-            data={pieData}
-            width={screenWidth * 0.45} // Chiếm 50% container
-            height={220}
-            chartConfig={{
-              backgroundColor: "#1cc910",
-              backgroundGradientFrom: "#eff3ff",
-              backgroundGradientTo: "#efefef",
-              decimalPlaces: 2,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-            }}
-            accessor={"population"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
-            absolute
-          />
+
+          <View style={styles.right}>
+            <Text style={styles.title}>Attendance Status</Text>
+            <PieChart
+              data={pieData}
+              width={screenWidth * 0.45} // Chiếm 50% container
+              height={220}
+              chartConfig={{
+                backgroundColor: "#fff",
+                backgroundGradientFrom: "#fff",
+                backgroundGradientTo: "#fff",
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              }}
+              accessor="population"
+              backgroundColor="transparent"
+              paddingLeft="15"
+              absolute
+            />
+            {selectedSlice && (
+              <View style={styles.tooltip}>
+                <Text
+                  style={{
+                    color: pieData.find((p) => p.name === selectedSlice.label)
+                      ?.color,
+                  }}
+                >
+                  {`${selectedSlice.label}: ${selectedSlice.value}`}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+        {/* Sử dụng SearchBar */}
+
+        <View style={styles.tableContainer}>
+          <Table tableHeader={tableHeader} tableData={tableData} />
         </View>
       </ScrollView>
     </Layout>
@@ -98,13 +187,69 @@ export default function DashboardStudent() {
 
 const styles = StyleSheet.create({
   dashboardContent: {
-    flexGrow: 1,
     paddingTop: 20,
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20,
+    width: "100%",
   },
+  image: {
+    width: 50, // Kích thước hình ảnh
+    height: 50,
+  },
+
+  rowGen: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 40,
+  },
+  sumLeft: {
+    flex: 5, // Chiếm 40% chiều rộng
+  },
+  sumRight: {
+    flex: 6, // Chiếm 60% chiều rộng
+    alignItems: "center",
+  },
+  dropdownContainer: {
+    marginBottom: 20,
+    display: "flex",
+    flexDirection: "row",
+    gap: 20,
+    width: "30%",
+    alignItems: "center",
+  },
+  tableContainer: {
+    marginBottom: 20,
+    display: "flex",
+    gap: 20,
+    width: "100%",
+    marginLeft: 40,
+    // alignItems: "center",
+  },
+  dropdownLabel: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginRight: 10,
+    fontFamily: "Roboto",
+    marginLeft: 40,
+  },
+  dropdownInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: "#f9f9f9",
+    width: "100%",
+  },
+  right: {
+    flex: 4,
+    width: "100%",
+    alignItems: "center", // Căn giữa theo chiều ngang
+    gap: 50, // Khoảng cách giữa các cột
+  },
+
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
@@ -114,18 +259,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     marginBottom: 20,
+    paddingLeft: 87,
+    gap: 60,
+    paddingBottom: 60,
   },
   summaryContainer: {
-    flex: 1, // Chiếm 50% container
-    marginRight: 10,
+    flex: 4,
+    width: "100%",
+    marginTop: 57,
+    paddingLeft: 40,
+    gap: 40,
   },
+
   row: {
     flexDirection: "row", // Mỗi hàng chứa 2 ô
-    justifyContent: "space-between",
-    marginBottom: 10,
   },
   summaryBox: {
-    width: "48%", // Mỗi ô chiếm 48% chiều rộng trong hàng
+    width: "100%",
     backgroundColor: "#f5f5f5",
     padding: 15,
     borderRadius: 8,
@@ -134,15 +284,24 @@ const styles = StyleSheet.create({
     elevation: 2, // Đổ bóng
   },
   summaryTitle: {
-    fontSize: 14,
-    color: "#fff",
+    fontSize: 16,
+    color: "#000000",
     textAlign: "center",
     marginTop: 5,
+    fontFamily: "Roboto",
+    fontWeight: "600", // 600 thường được dùng để đại diện cho semibold
   },
+
   summaryValue: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 45,
+    fontFamily: "Roboto",
     color: "#fff",
-    marginTop: 5,
+    fontWeight: "600",
+    marginLeft: 10,
+  },
+  tooltip: {
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
