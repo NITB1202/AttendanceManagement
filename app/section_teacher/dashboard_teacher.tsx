@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: 20,
         width: "20%",
-        
+        alignItems: "center",
     },
     dropdownLabel: {
         fontSize: 20,
