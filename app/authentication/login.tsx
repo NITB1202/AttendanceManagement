@@ -4,8 +4,7 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
-  Alert,
+  Pressable,
 } from "react-native";
 import { router } from "expo-router";
 import { useFonts, Roboto_700Bold } from "@expo-google-fonts/roboto";
@@ -17,19 +16,42 @@ import RoundedButton from "../../component/RoundedButton";
 import CheckBox from "../../component/CheckBox";
 import { useAuth } from "../../context/AuthContext";
 import { Role } from '@/enum/RoleEnum';
+import ErrorMessage from "@/component/ErrorMessage";
 
 export default function Login() {
-  const { onLogin} = useAuth();
+  const {onLogin} = useAuth();
   const [fontsLoaded] = useFonts({ Roboto_700Bold });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState<{ title: string; description: string }>({
+    title: '',
+    description: '',
+  });
+
 
   if (!fontsLoaded) return null;  
 
   const handleLogin = async () => {
-    if (!onLogin) {
-      console.error("onLogin is undefined. Please check AuthProvider.");
+    if(email === "")
+    {
+      setShowError(true);
+      setError({title: "Invalid username", description: "Email is empty."});
+      return;
+    }
+
+    if(password === "")
+    {
+      setShowError(true);
+      setError({title: "Invalid password", description: "Password is empty."});
+      return;
+    }
+
+    if(!validateEmail(email))
+    {
+      setShowError(true);
+      setError({title: "Invalid email", description: "Invalid email format"});
       return;
     }
 
@@ -46,10 +68,8 @@ export default function Login() {
         console.error("Unknown role detected.");
       }
     } else {
-      Alert.alert(
-        "Login Failed",
-        "Invalid username or password. Please try again."
-      );
+      setShowError(true);
+      setError({title: "Unrecognized account", description: "Email or password is incorrect."})
     }
   };
 
@@ -72,13 +92,13 @@ export default function Login() {
                 <CheckBox onPress={() => {setRemember(!remember)}}></CheckBox>
                 <Text style={styles.text}>Remember me</Text>
               </View>
-              <TouchableHighlight
+              <Pressable
                 onPress={() => {
                   router.push("/authentication/forgotpassword");
                 }}
               >
                 <Text style={styles.highlight}>Forgot password?</Text>
-              </TouchableHighlight>
+              </Pressable>
             </View>
           </View>
           <RoundedButton
@@ -96,9 +116,22 @@ export default function Login() {
           />
         </View>
       </View>
+      {
+        showError &&
+        <ErrorMessage
+          title={error.title}
+          description={error.description}
+          setOpen={setShowError}>
+        </ErrorMessage>
+      }
     </SafeAreaView>
   );
 }
+
+const validateEmail = (email: string) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};
 
 const styles = StyleSheet.create({
   container: {
