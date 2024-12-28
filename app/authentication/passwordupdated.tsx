@@ -17,7 +17,6 @@ export default function PasswordUpdated() {
           Your password has been changed successfully. Use your new password to
           log in.
         </Text>
-
         <RoundedButton
           title="RETURN"
           onPress={() => {
@@ -35,20 +34,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff", // Đặt nền trắng nếu cần
+    backgroundColor: "#fff",
   },
   formContainer: {
-    width: 514, // Chiều rộng cố định
+    width: 514,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    gap: 30, // Khoảng cách giữa các phần tử
-    paddingVertical: 50, // Căn lề dọc
+    gap: 30,
+    paddingVertical: 50,
   },
   icon: {
     width: 174,
     height: 174,
-    aspectRatio: 1, // Tỉ lệ 1:1 cho hình vuông
+    aspectRatio: 1,
     marginBottom: 20,
   },
   header: {
@@ -57,17 +56,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
     textAlign: "center",
-    width: "100%", // Chiếm toàn bộ chiều rộng container
+    width: "100%",
   },
   notice: {
     fontFamily: "Roboto_400Regular",
     fontSize: 20,
     color: "gray",
     textAlign: "center",
-    width: "100%", // Chiếm toàn bộ chiều rộng container
+    width: "100%",
   },
   button: {
-    width: "100%", // Chiếm toàn bộ chiều rộng container
+    width: "100%",
     marginTop: 30,
   },
 });

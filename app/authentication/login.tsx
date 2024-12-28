@@ -17,6 +17,7 @@ import CheckBox from "../../component/CheckBox";
 import { useAuth } from "../../context/AuthContext";
 import { Role } from '@/enum/RoleEnum';
 import ErrorMessage from "@/component/ErrorMessage";
+import validateEmail from "@/util/validEmail";
 
 export default function Login() {
   const {onLogin} = useAuth();
@@ -128,15 +129,11 @@ export default function Login() {
   );
 }
 
-const validateEmail = (email: string) => {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email);
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
+    backgroundColor: "white",
   },
   partContainer: {
     flex: 1,
