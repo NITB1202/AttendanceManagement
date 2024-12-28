@@ -15,7 +15,7 @@ import ReplyBox from "@/component/ReplyBox";
 import QuestionBox from "@/component/QuestionBox";
 import Table from "@/component/Table";
 
-const ClassManagerDetail = () => {
+const ClassTeacherDetail = () => {
     const [activeTab, setActiveTab] = useState('General');
     const [isAnonymous, setIsAnonymous] = useState(false);
 
@@ -126,7 +126,7 @@ const ClassManagerDetail = () => {
                                 <View style={styles.columnCourseName}>
                                     <Text style={styles.labelCourseName}>Teacher Code</Text>
                                     <select style={styles.dropdown}>
-                                        
+
                                     </select>
                                 </View>
                                 <View style={styles.columnClassName}>
@@ -140,7 +140,7 @@ const ClassManagerDetail = () => {
                                 <View style={styles.columnCourseName}>
                                     <Text style={styles.labelCourseName}>Student Code</Text>
                                     <select style={styles.dropdown}>
-                                        
+
                                     </select>
                                 </View>
                             </View>
@@ -181,36 +181,36 @@ const ClassManagerDetail = () => {
                                 </View>
                             </View>
                             <View style={styles.infoBox4}>
-                                    <View style={styles.columnClassName}>
-                                        <Text style={styles.labelClassName}>Maximun allowable late occurrences</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="class1">Class 1</option>
-                                            <option value="class2">Class 2</option>
-                                            <option value="class3">Class 3</option>
-                                        </select>
-                                    </View>
-                                    <View style={styles.columnCourseName}>
-                                        <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="course1">Math</option>
-                                            <option value="course2">Physics</option>
-                                            <option value="course3">Chemistry</option>
-                                        </select>
-                                    </View>
-                                    <View style={styles.columnCourseName}>
-                                        <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="course1">Math</option>
-                                            <option value="course2">Physics</option>
-                                            <option value="course3">Chemistry</option>
-                                        </select>
-                                    </View>
+                                <View style={styles.columnClassName}>
+                                    <Text style={styles.labelClassName}>Maximun allowable late occurrences</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="class1">Class 1</option>
+                                        <option value="class2">Class 2</option>
+                                        <option value="class3">Class 3</option>
+                                    </select>
+                                </View>
+                                <View style={styles.columnCourseName}>
+                                    <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="course1">Math</option>
+                                        <option value="course2">Physics</option>
+                                        <option value="course3">Chemistry</option>
+                                    </select>
+                                </View>
+                                <View style={styles.columnCourseName}>
+                                    <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="course1">Math</option>
+                                        <option value="course2">Physics</option>
+                                        <option value="course3">Chemistry</option>
+                                    </select>
+                                </View>
                             </View>
                         </View>
-                        
+
                         <Text style={styles.header2}>Student List</Text>
                         <View style={styles.buttonContainer}>
-                            
+
                             <TouchableOpacity style={styles.button1} onPress={handleUploadExcel}>
                                 <Text style={styles.buttonText}>Upload Excel File</Text>
                             </TouchableOpacity>
@@ -290,14 +290,14 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: 10,
     },
-    labelClassName: { 
+    labelClassName: {
         fontSize: 16,
         marginBottom: 5,
     },
     labelCourseName: {
         fontSize: 16,
         marginBottom: 5,
-    }, 
+    },
     columnCourseName: {
         flex: 1,
         marginBottom: 10,
@@ -591,4 +591,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ClassManagerDetail;
+export default ClassTeacherDetail;
