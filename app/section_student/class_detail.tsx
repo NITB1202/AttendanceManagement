@@ -6,7 +6,6 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    Image,
     Switch
 } from "react-native";
 import Layout from "../../component/Layout";
@@ -218,6 +217,9 @@ const ClassDetail = () => {
                                                 onCancel={() => {/* Handle cancel action */ }}
                                             />
                                         ))}
+                                        <TouchableOpacity style={styles.moreRepliesButton}>
+                                            <Text style={styles.moreRepliesText}>4 more replies</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </ScrollView>
                                 <View style={styles.addNewContainer}>
@@ -237,8 +239,8 @@ const ClassDetail = () => {
                                         <Switch
                                             value={isAnonymous}
                                             onValueChange={(value) => setIsAnonymous(value)}
-                                            thumbColor={isAnonymous ? "#00796b" : "#f4f3f4"}
-                                            trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                            thumbColor={isAnonymous ? "#ffffff" : "#ffffff"}
+                                            trackColor={{ false: "#gray", true: "#6a9ab0" }}
                                         />
                                     </View>
                                 </View>
@@ -427,13 +429,13 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     discussionHeader: {
+        marginTop: 65,
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
-        marginTop: 15,
         textAlign: 'left',
     },
     messageContainer: {
+        height: 300,
         marginTop: 10,
         borderRadius: 10,
         borderWidth: 2,
@@ -441,6 +443,18 @@ const styles = StyleSheet.create({
     },
     messageInnerContainer: {
         padding: 10,
+    },
+    moreRepliesButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: '#6A9AB0',
+        borderRadius: 5,
+        alignSelf: 'flex-start',
+        marginTop: 5,
+    },
+    moreRepliesText: {
+        fontSize: 14,
+        color: '#3a6d8c',
     },
     addButtonContainer: {
         width: '10%',
@@ -454,8 +468,8 @@ const styles = StyleSheet.create({
     },
     addButton: {
         marginTop: -75,
-        paddingVertical: 5, // Giảm padding chiều dọc
-        paddingHorizontal: 5, // Giảm padding chiều ngang
+        paddingVertical: 5, 
+        paddingHorizontal: 5, 
         backgroundColor: 'green',
         borderRadius: 5,
         alignItems: 'center',
