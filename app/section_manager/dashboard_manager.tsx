@@ -1,6 +1,12 @@
-import Layout from "@/component/Layout";
-import React from "react";
+import { useAuth } from "@/context/AuthContext";
+import { View, Text } from "react-native";
 
-export default function dashboard_manager() {
-  return <Layout children={undefined}></Layout>;
+export default function DashboardManager() {
+  const { authState } = useAuth();
+
+  return (
+    <View>
+      <Text>This is manager dashboard</Text>
+    </View>
+  );
 }
