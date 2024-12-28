@@ -1,72 +1,133 @@
-import { createContext, useContext, useState } from "react";
-export enum Role {
-  MANAGER = "manager",
-  STUDENT = "student",
-  TEACHER = "teacher",
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {Role} from "@/enum/RoleEnum"
+import authAPI from '@/apis/authAPI';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { decodeToken } from '@/util/decodeToken';
+
+interface AuthState {
+  authenticated: boolean;
+  id: number | null;
+  role: Role | null;
 }
+
 interface AuthProps {
-  authState: {
-    authenticated: boolean | null;
-    username: string | null;
-    role: Role | null;
-  };
-  onLogin: (username: string, password: string) => void;
+  authState: AuthState;
+  onLogin: (username: string, password: string) => Promise<AuthState>;
   onLogout: () => void;
 }
-const AuthContext = createContext<Partial<AuthProps>>({});
+
+const AuthContext = createContext<AuthProps | null>(null);
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
-export const AuthProvider = ({ children }: any) => {
-  const [authState, setAuthState] = useState<{
-    authenticated: boolean | null;
-    username: string | null;
-    role: Role | null;
-  }>({
-    authenticated: null,
-    username: null,
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [authState, setAuthState] = useState<AuthState>({
+    authenticated: false,
+    id: null,
     role: null,
   });
 
-  const login = (username: string, password: string): boolean => {
-    if (username === "manage" && password === "manage") {
-      setAuthState({
-        authenticated: true,
-        username: username,
-        role: Role.MANAGER,
-      });
-      return true;
-    } else if (username === "student" && password === "student") {
-      setAuthState({
-        authenticated: true,
-        username: username,
-        role: Role.STUDENT,
-      });
-      return true;
-    } else if (username === "teacher" && password === "teacher") {
-      setAuthState({
-        authenticated: true,
-        username: username,
-        role: Role.TEACHER,
-      });
-      return true;
-    } else {
-      return false;
+  const restoreAuthState = async () => {
+    try {
+      const accessToken = await AsyncStorage.getItem("accessToken");
+      if (accessToken) {
+        const decodedToken = decodeToken(accessToken);
+        let userRole = null;
+
+        switch (decodedToken.role) {
+          case "MANAGER":
+            userRole = Role.MANAGER;
+            break;
+          case "STUDENT":
+            userRole = Role.STUDENT;
+            break;
+          case "TEACHER":
+            userRole = Role.TEACHER;
+            break;
+        }
+
+        setAuthState({
+          authenticated: true,
+          id: Number(decodedToken.id),
+          role: userRole,
+        });
+      }
+    } catch (error) {
+      console.log("Error restoring auth state from AsyncStorage: ", error);
     }
   };
 
-  const logout = async () => {
+  useEffect(() => {
+    restoreAuthState();
+  }, []);
+
+
+  const onLogin = async (username: string, password: string): Promise<AuthState> => {
+
+    try{
+      const response = await authAPI.login(username, password);
+      const accessToken = response.data.accToken;
+      const refreshToken = response.data.refreshToken;
+
+      AsyncStorage.setItem("accessToken", accessToken);
+      AsyncStorage.setItem("refreshToken", refreshToken);
+
+      const decodedToken = decodeToken(accessToken);
+
+      let userRole = null;
+      switch(decodedToken.role){
+        case "MANAGER": 
+          userRole = Role.MANAGER;
+          break;
+        case "STUDENT":
+          userRole = Role.STUDENT;
+          break;
+        case "TEACHER":
+          userRole = Role.TEACHER;
+          break;
+      }
+
+      const authState = {
+        authenticated: true,
+        id: Number(decodedToken.id),
+        role: userRole,
+      }
+
+      setAuthState(authState);
+
+      return authState;
+    }
+    catch(error){
+      console.log("Unexpected error has occured: " + error);
+      return {
+        authenticated: false,
+        id: null,
+        role: null,
+      };
+    }
+  };
+
+  const onLogout = () => {
     setAuthState({
       authenticated: false,
-      username: null,
+      id: null,
       role: null,
     });
+
+    AsyncStorage.removeItem("accessToken");
+    AsyncStorage.removeItem("refreshToken");
   };
-  const value = {
-    onLogin: login,
-    onLogout: logout,
-    authState,
-  };
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+
+  return (
+    <AuthContext.Provider value={{ authState, onLogin, onLogout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
+

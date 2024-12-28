@@ -1,4 +1,4 @@
-import { Text, View, TextInput, ViewStyle, StyleSheet } from "react-native";
+import { Text, View, TextInput, ViewStyle, StyleSheet, Platform } from "react-native";
 import { useFonts, Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { Colors } from "../constants/Colors";
 import React from "react";
@@ -6,19 +6,27 @@ import React from "react";
 interface InputProps{
     title: string;
     placeHolder?: string;
-    style?: ViewStyle
+    style?: ViewStyle;
+    onChangeText?: (text: string) => void;
 }
-export default function Input({title,placeHolder,style}: InputProps){
+export default function Input({title, placeHolder, style, onChangeText}: InputProps){
     const [fontsLoaded] = useFonts({Roboto_400Regular});
     if(!fontsLoaded) return null;
+
+    const handleChangeText =(text: string) =>{
+        if(onChangeText) onChangeText(text);
+    }
 
     return (
         <View style={styles.container}> 
             <Text style={styles.title}>{title}</Text>
             <View style={[styles.inputContainer, style]}>
-                <TextInput  style={styles.input}
-                            placeholder={placeHolder}
-                            placeholderTextColor={Colors.hint}></TextInput>
+                <TextInput  
+                    style={[styles.input,{ outlineStyle: 'none' } as any]}
+                    placeholder={placeHolder}
+                    placeholderTextColor={Colors.hint}
+                    onChangeText={handleChangeText}>
+                </TextInput>
             </View>
         </View>
     );
@@ -45,6 +53,6 @@ const styles = StyleSheet.create({
     input:{
         fontFamily: "Roboto_400Regular",
         fontSize: 20,
-        outlineColor: "transparent"
+        outlineColor: "transparent",
     }
 });
