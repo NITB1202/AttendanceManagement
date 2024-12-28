@@ -77,7 +77,7 @@ export default function Verification() {
     <SafeAreaView style={styles.container}>
       <View style={styles.partContainer}>
         <View style={styles.formContainer}>
-          <Text style={styles.header}>Verification</Text>
+          <Text style={styles.header}>VERIFICATION</Text>
           <Text style={styles.notice}>
             Enter 4-digit code that you receive on your email.
           </Text>
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
   partContainer: {
     flex: 1,
@@ -134,14 +133,14 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: "bold",
     color: "black",
-    marginBottom: 20,
+    marginBottom: 30,
   },
   notice: {
-    fontFamily: "Roboto_700Bold",
+    fontFamily: "Roboto_400Regular",
     fontSize: 20,
     color: "gray",
     textAlign: "center",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   codeContainer: {
     flexDirection: "row",
@@ -172,10 +171,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 30,
   },
   resendText: {
-    fontFamily: "Roboto_700Bold",
+    fontFamily: "Roboto_400Regular",
     fontSize: 22,
     color: "black",
     marginBottom: 20,
