@@ -7,20 +7,26 @@ import { Colors } from "../constants/Colors";
 interface PasswordInputProps{
     title: string;
     placeHolder?: string;
+    onChangeText?: (text: string) => void;
 }
 
-export default function PasswordInput({title, placeHolder} : PasswordInputProps){
+export default function PasswordInput({title, placeHolder, onChangeText} : PasswordInputProps){
     const [fontsLoaded] = useFonts({Roboto_400Regular});
     const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+    const handleChangeText =(text: string) =>{
+        if(onChangeText) onChangeText(text);
+    }
     
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.inputContainer}>
-                <TextInput  style={styles.input}
+                <TextInput  style={[styles.input,{ outlineStyle: 'none' } as any]}
                             placeholder={placeHolder}
                             secureTextEntry={!isPasswordVisible}
-                            placeholderTextColor={Colors.hint}>
+                            placeholderTextColor={Colors.hint}
+                            onChangeText={handleChangeText}>
                 </TextInput>
                 <TouchableHighlight underlayColor="transparent"
                                     onPress={()=> setPasswordVisible(!isPasswordVisible)}>
