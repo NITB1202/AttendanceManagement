@@ -12,7 +12,7 @@ interface AuthState {
 
 interface AuthProps {
   authState: AuthState;
-  onLogin: (username: string, password: string) => Promise<AuthState>;
+  onLogin: (username: string, password: string, rememeber: boolean) => Promise<AuthState>;
   onLogout: () => void;
 }
 
@@ -68,15 +68,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
 
-  const onLogin = async (username: string, password: string): Promise<AuthState> => {
+  const onLogin = async (username: string, password: string, rememeber: boolean): Promise<AuthState> => {
 
     try{
       const response = await authAPI.login(username, password);
       const accessToken = response.data.accToken;
       const refreshToken = response.data.refreshToken;
 
-      AsyncStorage.setItem("accessToken", accessToken);
+      if(rememeber){
+        AsyncStorage.setItem("accessToken", accessToken);
       AsyncStorage.setItem("refreshToken", refreshToken);
+      }
 
       const decodedToken = decodeToken(accessToken);
 

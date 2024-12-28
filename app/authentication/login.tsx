@@ -23,6 +23,7 @@ export default function Login() {
   const [fontsLoaded] = useFonts({ Roboto_700Bold });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
 
   if (!fontsLoaded) return null;  
 
@@ -32,7 +33,7 @@ export default function Login() {
       return;
     }
 
-    const authState = await onLogin(email, password);
+    const authState = await onLogin(email, password, remember);
 
     if (authState.authenticated) {
       if (authState.role === Role.MANAGER) {
@@ -68,7 +69,7 @@ export default function Login() {
               onChangeText={setPassword}/>
             <View style={styles.bottom}>
               <View style={styles.checkBoxContainer}>
-                <CheckBox onPress={(isChecked) => {}}></CheckBox>
+                <CheckBox onPress={() => {setRemember(!remember)}}></CheckBox>
                 <Text style={styles.text}>Remember me</Text>
               </View>
               <TouchableHighlight
