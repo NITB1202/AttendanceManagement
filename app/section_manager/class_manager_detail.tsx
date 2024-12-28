@@ -17,7 +17,6 @@ import Table from "@/component/Table";
 
 const ClassManagerDetail = () => {
     const [activeTab, setActiveTab] = useState('General');
-    const [replyContent, setReplyContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
 
     const tableHeaderStudent = [
@@ -64,6 +63,14 @@ const ClassManagerDetail = () => {
         ],
     ];
 
+    const handleUploadExcel = () => {
+        console.log('Upload Excel File button clicked');
+    };
+
+    const handleAddNew = () => {
+        console.log('Add New button clicked');
+    };
+
     const messages = [
         { id: 1, avatar: 'https://via.placeholder.com/50', name: 'Anonymous', content: 'Hello!', timestamp: '2023-01-01 10:00 AM' },
     ];
@@ -89,66 +96,112 @@ const ClassManagerDetail = () => {
                     <>
                         <Text style={styles.header1}>Class Information</Text>
                         <View style={styles.infoContainer}>
-                            <View style={styles.column}>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Class Name:</Text>
-                                    <Text style={styles.value1}>M501.P22</Text>
+                            <View style={styles.infoBox1}>
+                                <View style={styles.columnClassName}>
+                                    <Text style={styles.labelClassName}>Class Name</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="class1">Class 1</option>
+                                        <option value="class2">Class 2</option>
+                                        <option value="class3">Class 3</option>
+                                    </select>
                                 </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Course Name:</Text>
-                                    <Text style={styles.value1}>Math</Text>
-                                </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Teacher Name:</Text>
-                                    <Text style={styles.value1}>Brion Anna</Text>
-                                </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Teacher Code:</Text>
-                                    <Text style={styles.value1}>T2102</Text>
-                                </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Class's Monitor Name:</Text>
-                                    <Text style={styles.value1}>Martin Cobe</Text>
-                                </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Student Code:</Text>
-                                    <Text style={styles.value1}>SV4921412</Text>
+                                <View style={styles.columnCourseName}>
+                                    <Text style={styles.labelCourseName}>Course Name</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="course1">Math</option>
+                                        <option value="course2">Physics</option>
+                                        <option value="course3">Chemistry</option>
+                                    </select>
                                 </View>
                             </View>
-                            <View style={styles.column}>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Start Date:</Text>
-                                    <Text style={styles.value1}>01/01/2023</Text>
+                            <View style={styles.infoBox2}>
+                                <View style={styles.columnClassName}>
+                                    <Text style={styles.labelClassName}>Teacher Name</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="class1">Brion Anna</option>
+                                        <option value="class2">Lionel Messi</option>
+                                        <option value="class3">Luis Suarez</option>
+                                    </select>
                                 </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>End Date:</Text>
-                                    <Text style={styles.value1}>31/12/2023</Text>
+                                <View style={styles.columnCourseName}>
+                                    <Text style={styles.labelCourseName}>Teacher Code</Text>
+                                    <select style={styles.dropdown}>
+                                        
+                                    </select>
                                 </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>Start Time:</Text>
-                                    <Text style={styles.value1}>08:00 AM</Text>
+                                <View style={styles.columnClassName}>
+                                    <Text style={styles.labelClassName}>Class Monitor's Name</Text>
+                                    <select style={styles.dropdown}>
+                                        <option value="class1">Class 1</option>
+                                        <option value="class2">Class 2</option>
+                                        <option value="class3">Class 3</option>
+                                    </select>
                                 </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label1}>End Time:</Text>
-                                    <Text style={styles.value1}>05:00 PM</Text>
+                                <View style={styles.columnCourseName}>
+                                    <Text style={styles.labelCourseName}>Student Code</Text>
+                                    <select style={styles.dropdown}>
+                                        
+                                    </select>
                                 </View>
                             </View>
-                            <View style={[styles.column, styles.wideColumn]}>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label2}>Maximum allowable late occurrences:</Text>
-                                    <Text style={styles.value2}>3</Text>
+                            <View style={styles.infoBox3}>
+                                <View style={styles.infoBox1}>
+                                    <View style={styles.columnClassName}>
+                                        <Text style={styles.labelClassName}>Class Name</Text>
+                                        <select style={styles.dropdown}>
+                                            <option value="class1">Class 1</option>
+                                            <option value="class2">Class 2</option>
+                                            <option value="class3">Class 3</option>
+                                        </select>
+                                    </View>
+                                    <View style={styles.columnCourseName}>
+                                        <Text style={styles.labelCourseName}>Course Name</Text>
+                                        <select style={styles.dropdown}>
+                                            <option value="course1">Math</option>
+                                            <option value="course2">Physics</option>
+                                            <option value="course3">Chemistry</option>
+                                        </select>
+                                    </View>
                                 </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label2}>Maximum allowable absence occurrences:</Text>
-                                    <Text style={styles.value2}>5</Text>
-                                </View>
-                                <View style={styles.infoRow}>
-                                    <Text style={styles.label2}>Allowed late time:</Text>
-                                    <Text style={styles.value2}>05:00</Text>
-                                </View>
+                            </View>
+                            <View style={styles.infoBox4}>
+                                    <View style={styles.columnClassName}>
+                                        <Text style={styles.labelClassName}>Maximun allowable late occurrences</Text>
+                                        <select style={styles.dropdown}>
+                                            <option value="class1">Class 1</option>
+                                            <option value="class2">Class 2</option>
+                                            <option value="class3">Class 3</option>
+                                        </select>
+                                    </View>
+                                    <View style={styles.columnCourseName}>
+                                        <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
+                                        <select style={styles.dropdown}>
+                                            <option value="course1">Math</option>
+                                            <option value="course2">Physics</option>
+                                            <option value="course3">Chemistry</option>
+                                        </select>
+                                    </View>
+                                    <View style={styles.columnCourseName}>
+                                        <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
+                                        <select style={styles.dropdown}>
+                                            <option value="course1">Math</option>
+                                            <option value="course2">Physics</option>
+                                            <option value="course3">Chemistry</option>
+                                        </select>
+                                    </View>
                             </View>
                         </View>
+                        
                         <Text style={styles.header2}>Student List</Text>
+                        <View style={styles.buttonContainer}>
+                            
+                            <TouchableOpacity style={styles.button1} onPress={handleUploadExcel}>
+                                <Text style={styles.buttonText}>Upload Excel File</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.button2} onPress={handleAddNew}>
+                                <Text style={styles.buttonText}>Add New</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={styles.tableContainer}>
                             <Table tableHeader={tableHeaderStudent} tableData={tableDataStudent} />
                         </View>
@@ -229,8 +282,63 @@ const ClassManagerDetail = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 20,
+    },
+    infoBox1: {
+        width: '60%',
+        padding: 10,
+        marginHorizontal: -18,
+        marginTop: -20,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+    },
+    columnClassName: {
+        flex: 1,
+        marginBottom: 10,
+    },
+    labelClassName: { 
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    labelCourseName: {
+        fontSize: 16,
+        marginBottom: 5,
+    }, 
+    columnCourseName: {
+        flex: 1,
+        marginBottom: 10,
+    },
+    dropdown: {
+        width: '80%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+    },
+    infoBox2: {
+        width: '100%',
+        padding: 10,
+        marginHorizontal: -18,
+        marginTop: -30,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+    },
+    infoBox3: {
+        width: '60%',
+        padding: 10,
+        marginHorizontal: -10,
+        marginTop: -20,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+    },
+    infoBox4: {
+        width: '50%',
+        padding: 10,
+        marginHorizontal: -18,
+        marginTop: -40,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
     },
     tabContainer: {
         flexDirection: 'row',
@@ -267,14 +375,18 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     header2: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: -30,
     },
     infoContainer: {
-        padding: 20,
-        borderRadius: 10,
-        flexDirection: 'row',
+        padding: 10,
+        flexDirection: 'column',
+
     },
     column: {
         flex: 1,
@@ -458,6 +570,29 @@ const styles = StyleSheet.create({
     anonymousLabel: {
         fontSize: 14,
         marginRight: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        marginLeft: 'auto',
+    },
+    button1: {
+        backgroundColor: 'gray',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginLeft: 10,
+    },
+    button2: {
+        backgroundColor: 'green',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginLeft: 10,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
 
