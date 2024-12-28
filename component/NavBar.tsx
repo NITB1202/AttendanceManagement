@@ -2,47 +2,115 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, usePathname } from "expo-router";
+import { useAuth } from "@/context/AuthContext"; // Để lấy role từ AuthContext
+
+// Định nghĩa các icon hợp lệ
+type IoniconName =
+  | "home-outline"
+  | "book-outline"
+  | "calendar-outline"
+  | "clipboard-outline"
+  | "person-outline"
+  | "grid-outline"
+  | "document-outline";
+
+// Định nghĩa kiểu menu item
+type MenuItem = { label: string; icon: IoniconName; path: string };
+
+// Định nghĩa menu dựa trên role
+const menuItemsByRole: Record<string, MenuItem[]> = {
+  student: [
+    {
+      label: "Dashboard",
+      icon: "home-outline",
+      path: "/section_student/dashboard_student",
+    },
+    {
+      label: "Class",
+      icon: "book-outline",
+      path: "/section_student/class_student",
+    },
+    { label: "Attendance", icon: "calendar-outline", path: "/" },
+    {
+      label: "RollCall",
+      icon: "clipboard-outline",
+      path: "/section_student/rollcall_student",
+    },
+  ],
+  teacher: [
+    {
+      label: "Dashboard",
+      icon: "home-outline",
+      path: "/section_teacher/dashboard_teacher",
+    },
+    {
+      label: "Class",
+      icon: "book-outline",
+      path: "/",
+    },
+    {
+      label: "Attendance",
+      icon: "calendar-outline",
+      path: "/section_teacher/class_teacher",
+    },
+  ],
+  manager: [
+    {
+      label: "Dashboard",
+      icon: "home-outline",
+      path: "/section_manager/dashboard_manager",
+    },
+    {
+      label: "Account",
+      icon: "person-outline",
+      path: "/section_manager/account_manager",
+    },
+    {
+      label: "Course",
+      icon: "grid-outline",
+      path: "/section_manager/course_manager",
+    },
+    {
+      label: "Class",
+      icon: "book-outline",
+      path: "/section_manager/class_manager",
+    },
+    { label: "Attendance", icon: "calendar-outline", path: "/" },
+    {
+      label: "Report",
+      icon: "document-outline",
+      path: "/section_manager/report_manager",
+    },
+  ],
+};
 
 function Navbar() {
   const router = useRouter();
   const pathname = usePathname(); // Lấy đường dẫn hiện tại
-  const [activeItem, setActiveItem] = useState<string | null>(null); // Không mặc định mục nào được chọn
+  const { authState } = useAuth(); // Lấy thông tin role từ AuthContext
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+
+  // Lấy menu dựa trên role của người dùng
+  const role = authState.role || "student"; // Mặc định là student nếu không có role
+  const currentMenuItems = menuItemsByRole[role];
 
   // Cập nhật trạng thái `activeItem` dựa trên đường dẫn hiện tại
   useEffect(() => {
-    if (pathname.includes("dashboard_student")) {
-      setActiveItem("Dashboard");
-    } else if (pathname.includes("class_student")) {
-      setActiveItem("Class");
-    } else if (pathname.includes("attendance")) {
-      setActiveItem("Attendance");
-    } else if (pathname.includes("rollcall_student")) {
-      setActiveItem("RollCall");
-    } else {
-      setActiveItem(null); // Nếu không khớp đường dẫn nào
-    }
-  }, [pathname]);
-
-  const handlePress = (item: string) => {
-    setActiveItem(item); // Cập nhật trạng thái activeItem
-
-    // Điều hướng tới các đường dẫn khác nhau dựa trên item
-    switch (item) {
-      case "Dashboard":
-        router.push("/section_student/dashboard_student");
-        break;
-      case "Class":
-        router.push("/section_student/class_student");
-        break;
-      case "Attendance":
-        router.push("/");
-        break;
-      case "RollCall":
-        router.push("/section_student/rollcall_student");
-        break;
-      default:
-        router.push("/");
-    }
+    const active = currentMenuItems.find((item) =>
+      pathname.includes(item.path)
+    );
+    setActiveItem(active ? active.label : null);
+  }, [pathname, currentMenuItems]);
+  const handlePress = (path: string) => {
+    router.push(
+      path as
+        | `/section_student/dashboard_student`
+        | `/section_student/class_student`
+        | `/section_student/rollcall_student`
+        | `/section_teacher/dashboard_teacher`
+        | `/section_manager/dashboard_manager`
+        | "/"
+    );
   };
 
   return (
@@ -57,29 +125,17 @@ function Navbar() {
 
       {/* Menu Section */}
       <View style={styles.menuContainer}>
-        {["Dashboard", "Class", "Attendance", "RollCall"].map((item) => (
+        {currentMenuItems.map((item) => (
           <TouchableOpacity
-            key={item}
+            key={item.label}
             style={[
               styles.menuItem,
-              activeItem === item && styles.activeMenuItem, // Áp dụng màu nền nếu được chọn
+              activeItem === item.label && styles.activeMenuItem, // Áp dụng màu nền nếu được chọn
             ]}
-            onPress={() => handlePress(item)} // Gọi hàm handlePress
+            onPress={() => handlePress(item.path)} // Gọi hàm handlePress
           >
-            <Ionicons
-              name={
-                item === "Dashboard"
-                  ? "home-outline"
-                  : item === "Class"
-                  ? "book-outline"
-                  : item === "Attendance"
-                  ? "calendar-outline"
-                  : "clipboard-outline"
-              }
-              size={20}
-              color="#ffffff"
-            />
-            <Text style={styles.menuText}>{item}</Text>
+            <Ionicons name={item.icon} size={20} color="#ffffff" />
+            <Text style={styles.menuText}>{item.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
