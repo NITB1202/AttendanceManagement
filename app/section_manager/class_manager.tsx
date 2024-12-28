@@ -3,7 +3,9 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Text,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import Layout from "../../component/Layout"; // Import Layout component
 import TableComponent from "../../component/Table"; // Import TableComponent của bạn
@@ -17,7 +19,7 @@ const handleAddNew = () => {
   console.log('Add New button clicked');
 };
 
-const ClassStudent = () => {
+const ClassManager = () => {
   const tableHeader = [
     "CLASS NAME",
     "COURSE NAME",
@@ -50,7 +52,6 @@ const ClassStudent = () => {
             placeholder="Type to search..."
             onSearch={handleSearch}
           />
-
           <View style={styles.dropdownContainer}>
             <select
               style={styles.dropdownInput}
@@ -61,6 +62,9 @@ const ClassStudent = () => {
               <option value="SE105.024">Teacher name</option>
             </select>
           </View>
+          <TouchableOpacity style={styles.addButton} onPress={handleAddNew}>
+             <Text style={styles.addButtonText}>Add New</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Table Section */}
@@ -72,7 +76,7 @@ const ClassStudent = () => {
   );
 };
 
-export default ClassStudent;
+export default ClassManager;
 
 const styles = StyleSheet.create({
   container: {
@@ -109,6 +113,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#fff",
   },
+    addButton: {
+        backgroundColor: 'green',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginLeft: 'auto',
+    },
+    addButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
   tableContainer: {
     marginTop: 20,
   },

@@ -9,20 +9,59 @@ import {
     Image,
     Switch
 } from "react-native";
-import Layout from "../../../component/Layout";
-import CommentBox from "../../../component/CommentBox";
+import Layout from "../../component/Layout";
+import CommentBox from "../../component/CommentBox";
 import ReplyBox from "@/component/ReplyBox";
 import QuestionBox from "@/component/QuestionBox";
+import Table from "@/component/Table";
 
-const General = () => {
+const ClassDetail = () => {
     const [activeTab, setActiveTab] = useState('General');
     const [replyContent, setReplyContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
 
-    const students = [
-        { order: 1, code: 'SV001', name: 'John Doe', username: 'johndoe', attendance: 'On-time' },
-        { order: 2, code: 'SV002', name: 'Jane Smith', username: 'janesmith', attendance: 'Late' },
-        { order: 3, code: 'SV003', name: 'Alice Johnson', username: 'alicejohnson', attendance: 'Absent' },
+    const tableHeaderStudent = [
+        "ORDER",
+        "STUDENT CODE",
+        "STUDENT NAME",
+        "USERNAME",
+    ];
+
+    const tableDataStudent = [
+        [
+            "M120.P22",
+            "MATH BASIC",
+            "01/06/2024",
+            "CAMLCUTE104",
+        ],
+    ];
+
+    const tableHeaderAttendance = [
+        "ORDER",
+        "STUDENT CODE",
+        "STUDENT NAME",
+        "ATTENDANCE STATUS",
+    ];
+
+    const tableDataAttendance = [
+        [
+            "M120.P22",
+            "MATH BASIC",
+            "01/06/2024",
+            "CAMLCUTE104",
+        ],
+    ];
+
+    const tableHeaderDate = [
+        "NO",
+        "DATE",
+    ];
+
+    const tableDataDate = [
+        [
+            "1",
+            "01/01/2025",
+        ],
     ];
 
     const sessions = [
@@ -135,57 +174,25 @@ const General = () => {
                         </View>
                         <Text style={styles.header2}>Student List</Text>
                         <View style={styles.tableContainer}>
-                            <View style={styles.tableHeader}>
-                                <Text style={styles.tableHeaderText}>Order</Text>
-                                <Text style={styles.tableHeaderText}>Student Code</Text>
-                                <Text style={styles.tableHeaderText}>Student Name</Text>
-                                <Text style={styles.tableHeaderText}>Username</Text>
-                            </View>
-                            {students.map((student, index) => (
-                                <View key={index} style={styles.tableRow}>
-                                    <Text style={styles.tableCell}>{student.order}</Text>
-                                    <Text style={styles.tableCell}>{student.code}</Text>
-                                    <Text style={styles.tableCell}>{student.name}</Text>
-                                    <Text style={styles.tableCell}>{student.username}</Text>
-                                </View>
-                            ))}
+                            <Table tableHeader={tableHeaderStudent} tableData={tableDataStudent} />
                         </View>
                     </>
                 ) : (
                     <View style={styles.sessionContainer}>
                         <View style={styles.sessionContent}>
-                            <View style={styles.tableContainerSession}>
-                                <View style={styles.tableHeaderSession}>
-                                    <Text style={styles.tableHeaderTextSession}>No</Text>
-                                    <Text style={styles.tableHeaderTextSession}>Date</Text>
+                            <View style={styles.tableTimeContainer}>
+                                <View style={styles.tableContainer}>
+                                    <Table tableHeader={tableHeaderDate} tableData={tableDataDate} />
                                 </View>
-                                {sessions.map((session, index) => (
-                                    <View key={index} style={styles.tableRowSession}>
-                                        <Text style={styles.tableCellSession}>{session.no}</Text>
-                                        <Text style={styles.tableCellSession}>{session.date}</Text>
-                                    </View>
-                                ))}
                             </View>
-
                             <View style={styles.attendanceStatusContainer}>
                                 <Text style={styles.label1}>Roll Caller Name:   Jack 97</Text>
                                 <Text style={styles.label1}>Student Code:       SV23821749</Text>
                                 <Text style={styles.attendanceStatusHeader}>Student Attendance Status</Text>
                                 <View style={styles.tableContainerAttendance}>
-                                    <View style={styles.tableHeaderAttendance}>
-                                        <Text style={styles.tableHeaderTextAttendance}>Order</Text>
-                                        <Text style={styles.tableHeaderTextAttendance}>Student Code</Text>
-                                        <Text style={styles.tableHeaderTextAttendance}>Student Name</Text>
-                                        <Text style={styles.tableHeaderTextAttendance}>Attendance Status</Text>
+                                    <View style={styles.tableContainer}>
+                                        <Table tableHeader={tableHeaderAttendance} tableData={tableDataAttendance} />
                                     </View>
-                                    {students.map((student, index) => (
-                                        <View key={index} style={styles.tableRowAttendance}>
-                                            <Text style={styles.tableCellAttendance}>{student.order}</Text>
-                                            <Text style={styles.tableCellAttendance}>{student.code}</Text>
-                                            <Text style={styles.tableCellAttendance}>{student.name}</Text>
-                                            <Text style={styles.tableCellAttendance}>{student.attendance}</Text>
-                                        </View>
-                                    ))}
                                 </View>
                                 <Text style={styles.discussionHeader}>Discussion</Text>
                                 <ScrollView style={styles.messageContainer}>
@@ -289,7 +296,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     infoContainer: {
-        backgroundColor: '#f9f9f9',
         padding: 20,
         borderRadius: 10,
         flexDirection: 'row',
@@ -311,6 +317,7 @@ const styles = StyleSheet.create({
         color: '#333',
         flex: 1,
         textAlign: 'left',
+        fontWeight: 'bold',
     },
     value1: {
         fontSize: 16,
@@ -323,6 +330,7 @@ const styles = StyleSheet.create({
         color: '#333',
         flex: 2,
         textAlign: 'left',
+        fontWeight: 'bold',
     },
     value2: {
         fontSize: 16,
@@ -360,6 +368,12 @@ const styles = StyleSheet.create({
     sessionContent: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    tableTimeContainer: {
+        width: '15%',
+        alignSelf: 'flex-start',
+        marginLeft: -20,
+        marginTop: -30,
     },
     tableContainerSession: {
         marginTop: -20,
@@ -404,37 +418,19 @@ const styles = StyleSheet.create({
     attendanceStatusHeader: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: -20,
         textAlign: 'left',
+        marginTop: 10,
     },
     tableContainerAttendance: {
         marginTop: 10,
         width: '100%',
     },
-    tableHeaderAttendance: {
-        flexDirection: 'row',
-        backgroundColor: '#f0f0f0',
-        padding: 5,
-    },
-    tableHeaderTextAttendance: {
-        flex: 1,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    tableRowAttendance: {
-        flexDirection: 'row',
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    tableCellAttendance: {
-        flex: 1,
-        textAlign: 'center',
-    },
     discussionHeader: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
+        marginTop: 15,
         textAlign: 'left',
     },
     messageContainer: {
@@ -489,4 +485,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default General;
+export default ClassDetail;
