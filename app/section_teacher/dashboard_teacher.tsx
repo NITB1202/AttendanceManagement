@@ -110,16 +110,20 @@ export default function DashboardTeacher() {
                             <Text style={styles.infoLabel}>Respond Received</Text>
                             <View style={styles.infoContent}>
                                 <Image
-                                    source={require('../../assets/images/response-receive.png')}
+                                    source={require('../../assets/images/shape.png')}
                                     style={styles.infoImage}
                                 />
                                 <Text style={styles.infoNumber}>48</Text>
                             </View>
-                            <Text style={styles.infoNumber}>48</Text>
                         </View>
                         <View style={styles.infoBoxLarge}>
                             <Text style={styles.infoLabel}>The efficacy of the lesson</Text>
-                            <Text style={styles.infoNumber}>72%</Text>
+                            <View style={styles.infoContentLarge}></View>
+                                <Image
+                                    source={require('../../assets/images/trending-up.png')}
+                                    style={styles.trendingUpImage}
+                                />
+                                <Text style={styles.trendingUpNumber}>72%</Text>
                         </View>
                     </View>
                     <View style={styles.pieChartContainer}>
@@ -241,10 +245,16 @@ const styles = StyleSheet.create({
     infoContent: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    infoContentLarge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     infoImage: {
-        width: 72,
-        height: 72,
+        width: 60,
+        height: 60,
         marginRight: 10,
     },
     infoLabel: {
@@ -261,6 +271,16 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         height: 170,
+    },
+    trendingUpImage: {
+        width: 60,
+        height: 60,
+        marginRight: 10,
+    },
+    trendingUpNumber: {
+        fontSize: 72,
+        fontWeight: 'bold',
+        color: 'white',
     },
     pieChartContainer: {
         marginTop: 20,
