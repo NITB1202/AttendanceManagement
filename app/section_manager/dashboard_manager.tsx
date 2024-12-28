@@ -9,8 +9,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { BarChart } from "react-native-chart-kit";
-import { G, Rect, Text as SvgText } from "react-native-svg";
+import { BarChart } from "react-native-gifted-charts";
 
 export default function ManagerDashboard() {
   const [filter, setFilter] = useState("Week");
@@ -46,35 +45,35 @@ export default function ManagerDashboard() {
       icon: require("../../assets/images/icon/user-cross.png"),
     },
   ];
+  const groupedData = [
+    {
+      label: "Mon",
+      values: [5, 14, 12],
+      colors: ["#1E88E5", "#FFC107", "#F44336"],
+    },
+    {
+      label: "Tue",
+      values: [3, 7, 10],
+      colors: ["#1E88E5", "#FFC107", "#F44336"],
+    },
+    {
+      label: "Wed",
+      values: [1, 19, 5],
+      colors: ["#1E88E5", "#FFC107", "#F44336"],
+    },
+  ];
 
-  const barData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    datasets: [
-      {
-        data: [5, 3, 1, 0, 0, 0],
-        color: () => "#4CAF50", // Màu cho "Permission"
-      },
-      {
-        data: [14, 7, 19, 0, 0, 0],
-        color: () => "#FFC107", // Màu cho "Late"
-      },
-      {
-        data: [12, 10, 5, 0, 0, 0],
-        color: () => "#F44336", // Màu cho "Without Permission"
-      },
-    ],
-  };
+  // Tạo dữ liệu hợp nhất và xử lý nhãn trục x
+  const flattenedData = groupedData.flatMap((group, groupIndex) =>
+    group.values.map((value, index) => ({
+      value,
+      label: index === Math.floor(group.values.length / 2) ? group.label : "", // Hiển thị nhãn ở giữa nhóm
+      frontColor: group.colors[index],
+      spacing: index === group.values.length - 1 ? 20 : 2, // 10px giữa nhóm, 2px giữa các cột cùng nhóm
+    }))
+  );
 
-  const chartConfig = {
-    backgroundGradientFrom: "#ffffff",
-    backgroundGradientTo: "#ffffff",
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // Sử dụng màu từ dataset
-  };
-
-  const screenWidth = Dimensions.get("window").width;
+  console.log(flattenedData);
 
   return (
     <Layout>
@@ -154,17 +153,18 @@ export default function ManagerDashboard() {
           <Text style={styles.chartTitle}>
             Student attendance statistic table
           </Text>
-          <BarChart
-            data={barData}
-            width={screenWidth - 20}
-            height={220}
-            chartConfig={chartConfig}
-            verticalLabelRotation={30}
-            showValuesOnTopOfBars
-            style={styles.chartContainer}
-            yAxisLabel="" // Cung cấp nhãn cho trục Y (có thể để chuỗi rỗng)
-            yAxisSuffix="" // Cung cấp hậu tố cho trục Y (có thể để chuỗi rỗng)
-          />
+          <View style={styles.containerBar}>
+            <BarChart
+              data={flattenedData}
+              barWidth={40}
+              spacing={4} // Đặt cố định khoảng cách 2px giữa các cột
+              hideYAxisText
+              xAxisLabelTextStyle={styles.xAxisLabel}
+              noOfSections={4}
+              maxValue={30}
+              isAnimated
+            />
+          </View>
         </View>
       </View>
     </Layout>
@@ -290,9 +290,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
-  chartContainer: {
-    marginTop: 20,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
+  containerBar: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    padding: 16,
+  },
+  yAxisLabel: {
+    color: "#757575",
+    fontSize: 12,
+  },
+  xAxisLabel: {
+    color: "#212121",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });
