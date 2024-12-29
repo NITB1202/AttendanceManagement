@@ -161,25 +161,29 @@ export default function TeacherDashboard() {
         <View style={styles.containerCard}>
           {/* Card 1 */}
           <View style={[styles.card, { backgroundColor: "#6A9AB0" }]}>
-            <Image
-              source={require("../../assets/images/icon/list-center.png")} // Đường dẫn icon trong máy
-              style={styles.icon}
-            />
-            <View>
-              <Text style={styles.cardTitle}>Respond received</Text>
-              <Text style={styles.cardValue}>48</Text>
+            <Text style={styles.cardTitle}>Respond received</Text>
+            <View style={styles.cardType}>
+              <Image
+                source={require("../../assets/images/icon/list-center.png")} // Đường dẫn icon trong máy
+                style={styles.icon1}
+              />
+              <View>
+                <Text style={styles.cardValue}>48</Text>
+              </View>
             </View>
           </View>
 
           {/* Card 2 */}
           <View style={[styles.card, { backgroundColor: "#4CAF50" }]}>
-            <Image
-              source={require("../../assets/images/icon/shape.png")} // Đường dẫn icon trong máy
-              style={styles.icon}
-            />
-            <View>
-              <Text style={styles.cardTitle}>The efficacy of the lesson</Text>
-              <Text style={styles.cardValue}>72%</Text>
+            <Text style={styles.cardTitle}>The efficacy of the lesson</Text>
+            <View style={styles.cardType}>
+              <Image
+                source={require("../../assets/images/icon/shape.png")} // Đường dẫn icon trong máy
+                style={styles.icon2}
+              />
+              <View>
+                <Text style={styles.cardValue}>72%</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -233,7 +237,7 @@ const chartConfig = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#FFFFFF",
     padding: 10,
   },
   title: {
@@ -294,20 +298,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // Khoảng cách đều giữa các biểu đồ
     alignItems: "center", // Canh giữa theo chiều dọc
     marginTop: 20,
+    backgroundColor: "#F5F5F5",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 5,
   },
   chartContainer: {
     flex: 1, // Chiếm đều không gian
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
-    backgroundColor: "#fff",
     marginHorizontal: 5, // Khoảng cách giữa hai biểu đồ
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
   },
   chartTitle: {
     fontSize: 18,
@@ -326,32 +329,45 @@ const styles = StyleSheet.create({
     alignItems: "center", // Căn giữa theo chiều dọc
     paddingHorizontal: 10, // Khoảng cách hai bên
     marginVertical: 20, // Khoảng cách trên và dưới
+    width: "40%",
+    gap: 40,
   },
   card: {
-    flexDirection: "row", // Hiển thị icon và nội dung ngang hàng
-    alignItems: "center", // Căn giữa theo chiều dọc
+    flexDirection: "column", // Hiển thị icon và nội dung ngang hàng
     padding: 10,
     borderRadius: 8,
-    width: "48%", // Mỗi card chiếm 48% màn hình
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5, // Hiệu ứng đổ bóng cho Android
   },
-  icon: {
-    width: 40, // Kích thước icon
-    height: 40,
+  cardType: {
+    flexDirection: "row", // Hiển thị icon và nội dung ngang hàng
+    alignItems: "center", // Đảm bảo các item căn giữa theo trục dọc
+    justifyContent: "flex-start", // Căn các item sang trái
+  },
+  icon1: {
+    width: 70, // Kích thước icon
+    height: 70,
+    flex: 6, // Chiếm 60% không gian
     marginRight: 10, // Khoảng cách giữa icon và text
   },
+  icon2: {
+    flex: 6, // Chiếm 60% không gian
+    marginRight: 10, // Khoảng cách giữa icon và text
+    width: 40, // Kích thước chiều rộng
+    height: 40, // Kích thước chiều cao
+    resizeMode: "contain",
+  },
   cardTitle: {
-    fontSize: 14,
-    color: "#ffffff", // Màu chữ tiêu đề
+    fontSize: 20,
+    color: "#000000", // Màu chữ tiêu đề
     marginBottom: 5,
+    fontWeight: "500",
   },
   cardValue: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 64,
+    fontWeight: "500",
+    flex: 4, // Chiếm 60% không gian
     color: "#ffffff", // Màu chữ giá trị
   },
 });
