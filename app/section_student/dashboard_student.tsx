@@ -59,14 +59,14 @@ export default function DashboardStudent() {
         {/* Dropdown  */}
         <View style={styles.dropdownContainer}>
           <Text style={styles.dropdownLabel}>Class</Text>
-          <select
+          {/* <select
             style={styles.dropdownInput}
             onChange={(e) => console.log(e.target.value)}
           >
             <option value="SE103.022">SE103.022</option>
             <option value="SE104.023">SE104.023</option>
             <option value="SE105.024">SE105.024</option>
-          </select>
+          </select> */}
         </View>
 
         {/* Container for Summary and PieChart */}

@@ -5,16 +5,26 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Modal,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import RoundedButton from "@/component/RoundedButton";
+import QRCode from 'react-native-qrcode-svg';
+import { router } from "expo-router";
+import { Platform } from 'react-native';
 
 const RollcallStudent = () => {
-  const [isModalVisible, setModalVisible] = useState(false); // Hiển thị modal
-  const [selectedClass, setSelectedClass] = useState<string>("SE501.P12"); // Lớp học được chọn
-  const [showDropdown, setShowDropdown] = useState<boolean>(false); // Hiển thị dropdown
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<string>("SE501.P12");
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [showQR, setShowQR] = useState(false);
+  const [QRContent, setQRContent] = useState<{className: string; session: number}>({
+    className: "",
+    session: 0
+  });
+  
   const classOptions: string[] = [
     "SE501.P12",
     "SE502.P11",
@@ -22,57 +32,70 @@ const RollcallStudent = () => {
     "SE504.P09",
     "SE505.P08",
     "SE506.P07",
-  ]; // Danh sách lớp học
+  ];
 
   const handleGenerateQRCode = () => {
-    setModalVisible(true); // Hiển thị modal
+    setModalVisible(true);
   };
 
   const handleCloseModal = () => {
-    setModalVisible(false); // Ẩn modal
+    setModalVisible(false);
+    setShowDropdown(false);
   };
 
   const handleSelectClass = (className: string) => {
-    setSelectedClass(className); // Gán giá trị lớp học
-    setShowDropdown(false); // Đóng dropdown
+    setSelectedClass(className);
+    setShowDropdown(false);
   };
 
   const handleConfirm = () => {
-    console.log("Selected class:", selectedClass);
-    setModalVisible(false); // Ẩn modal
+    setQRContent({
+      className: selectedClass,
+      session: 1
+    });
+    setModalVisible(false);
+    setShowQR(true);
   };
 
   const handleScanQRCode = () => {
     console.log("Scan QR code");
-    // Thêm logic quét mã QR tại đây
+    router.navigate("/section_student/open_camera");
   };
 
   return (
     <Layout>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, styles.generateButton]}
-            onPress={handleGenerateQRCode}
-          >
-            <Ionicons name="add-circle-outline" size={20} color="#FFFFFF" />
-            <Text style={styles.buttonText}>Generate QR code</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.scanButton]}
-            onPress={handleScanQRCode}
-          >
-            <Ionicons name="camera-outline" size={20} color="#FFFFFF" />
-            <Text style={styles.buttonText}>Scan QR code</Text>
-          </TouchableOpacity>
+          <RoundedButton
+            title="Generate QR code"
+            icon={<Ionicons name="add-circle-outline" size={30} color="#FFFFFF" />}
+            style={styles.generateButton}
+            focusColor="#027D15"
+            onPress={handleGenerateQRCode}>
+          </RoundedButton>
+        {
+          Platform.OS !== 'web' &&
+          <RoundedButton
+            title="Scan QR code"
+            icon={<Ionicons name="camera-outline" size={30} color="#FFFFFF" />}
+            onPress={handleScanQRCode}>
+          </RoundedButton>
+        }
         </View>
 
         <View style={styles.qrContainer}>
-          <Image
-            source={require("../../assets/images/qr.png")} // Đường dẫn ảnh từ dự án của bạn
-            style={styles.qrCode}
-          />
+          {
+            showQR &&
+            <QRCode
+              value={JSON.stringify(QRContent)}
+              size={400}
+              backgroundColor="white"
+              color="black">
+            </QRCode>
+          }
         </View>
+
+        <Text style={styles.timer}>00:00</Text>
 
         {/* Modal */}
         <Modal
@@ -84,19 +107,18 @@ const RollcallStudent = () => {
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               {/* Header */}
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Take a roll call</Text>
-                <TouchableOpacity onPress={handleCloseModal}>
+              <Pressable onPress={handleCloseModal}>
                   <Ionicons name="close" size={24} color="#000" />
-                </TouchableOpacity>
-              </View>
+              </Pressable>
+              <Text style={styles.modalTitle}>Take a roll call</Text>
 
               {/* Body */}
               <Text style={styles.modalText}>
                 Select the class for which you would like to take a roll call
               </Text>
+
               {/* Dropdown */}
-              <TouchableOpacity
+              <Pressable
                 style={styles.dropdown}
                 onPress={() => setShowDropdown(!showDropdown)}
               >
@@ -106,7 +128,7 @@ const RollcallStudent = () => {
                   size={20}
                   color="#000"
                 />
-              </TouchableOpacity>
+              </Pressable>
 
               {showDropdown && (
                 <ScrollView style={styles.dropdownListInModal}>
@@ -123,12 +145,13 @@ const RollcallStudent = () => {
               )}
 
               {/* Confirm Button */}
-              <TouchableOpacity
-                style={[styles.button, styles.confirmButton]}
+              <RoundedButton
+                title="CONFIRM"
                 onPress={handleConfirm}
-              >
-                <Text style={styles.buttonText}>CONFIRM</Text>
-              </TouchableOpacity>
+                style={styles.confirmButton}
+                focusColor="#027D15">
+              </RoundedButton>
+             
             </View>
           </View>
         </Modal>
@@ -150,70 +173,59 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     marginBottom: 20,
-    width: 500,
     gap: 40,
   },
   button: {
     flex: 1,
-    flexDirection: "row", // Đặt biểu tượng và text nằm ngang
-    alignItems: "center", // Căn giữa icon và text theo chiều dọc
+    flexDirection: "row", 
+    alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
     borderRadius: 5,
   },
   generateButton: {
-    backgroundColor: "#4CAF50", // Màu xanh lá
-  },
-  scanButton: {
-    backgroundColor: "#3A6D8C", // Màu xanh dương
+    backgroundColor: "#00B01A",
   },
   buttonText: {
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
-    marginLeft: 10, // Khoảng cách giữa biểu tượng và text
+    marginLeft: 10,
   },
   qrContainer: {
     justifyContent: "center",
     alignItems: "center",
     width: 500,
     height: 500,
-  },
-  qrCode: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
+    borderColor: "#001F3F",
+    borderRadius: 10,
+    borderWidth: 20,
   },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Màu nền tối mờ
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     backgroundColor: "#FFFFFF",
     padding: 20,
     borderRadius: 10,
-    alignItems: "flex-start", // Đưa toàn bộ nội dung căn trái
-    width: "40%",
+    alignItems: "flex-end",
+    width: 400,
     marginLeft: 255,
-  },
-  modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-    width: "100%",
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "left",
+    width: "100%",
   },
   modalText: {
     fontSize: 16,
     marginBottom: 20,
-    textAlign: "left", // Căn lề trái
-    alignSelf: "flex-start", // Đảm bảo nội dung căn từ đầu của container
+    textAlign: "left",
+    alignSelf: "flex-start",
   },
   dropdown: {
     flexDirection: "row",
@@ -225,7 +237,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     width: "100%",
-    alignSelf: "flex-start", // Đưa dropdown sát bên trái
+    alignSelf: "flex-start",
   },
   dropdownText: {
     fontSize: 16,
@@ -237,7 +249,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     marginTop: 10,
     width: "100%",
-    maxHeight: 150, // Đặt độ cao tối đa
+    maxHeight: 150,
   },
   dropdownItem: {
     padding: 10,
@@ -248,11 +260,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   confirmButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#00B01A",
     width: "100%",
-    alignItems: "center",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10, // Cách nút confirm 10px
+    height: 40  ,
+    marginTop: 20,
   },
+  timer:{
+    padding: 20,
+    fontSize: 36,
+    fontFamily: "Roboto_700Bold",
+  }
 });

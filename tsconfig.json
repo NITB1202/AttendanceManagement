@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "module": "ESNext",
+    "jsx": "react-native",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
