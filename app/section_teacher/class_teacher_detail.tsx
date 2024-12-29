@@ -263,8 +263,25 @@ const ClassTeacherDetail = () => {
                                                 onCancel={() => {/* Handle cancel action */ }}
                                             />
                                         ))}
+                                        <TouchableOpacity style={styles.moreRepliesButton}>
+                                            <Text style={styles.moreRepliesText}>4 more replies</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </ScrollView>
+                                    <View style={styles.addNewContainer}>
+                                        <TouchableOpacity style={styles.addButton}>
+                                            <Text style={styles.addButtonText}>Add New</Text>
+                                        </TouchableOpacity>
+                                        <QuestionBox
+                                            avatar='https://via.placeholder.com/50'
+                                            name='Your Name'
+                                            content='Write your question here'
+                                            timestamp='Just now'
+                                            onCancel={() => {/* Handle cancel action */ }}
+                                            onPost={() => {/* Handle post action */ }}
+                                        />
+                                        
+                                    </View>
                             </View>
                         </View>
                     </View>
@@ -509,15 +526,14 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     discussionHeader: {
+        marginTop: 65,
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
-        marginTop: 15,
         textAlign: 'left',
     },
     messageContainer: {
         marginTop: 10,
-        height: 400,
+        height: 300,
         borderRadius: 10,
         borderWidth: 2,
         borderColor: '#f0f0f0',
@@ -532,7 +548,6 @@ const styles = StyleSheet.create({
     addNewContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         marginTop: 10,
     },
     addButton: {
@@ -588,6 +603,18 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    moreRepliesButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: '#6A9AB0',
+        borderRadius: 5,
+        alignSelf: 'flex-start',
+        marginTop: 5,
+    },
+    moreRepliesText: {
+        fontSize: 14,
+        color: '#3a6d8c',
     },
 });
 

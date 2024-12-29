@@ -125,9 +125,9 @@ const ClassManagerDetail = () => {
                                 </View>
                                 <View style={styles.columnCourseName}>
                                     <Text style={styles.labelCourseName}>Teacher Code</Text>
-                                    <select style={styles.dropdown}>
-                                        
-                                    </select>
+                                    <View style={styles.textBox}>
+                                        <Text style={styles.text}>T2102</Text>
+                                    </View>
                                 </View>
                                 <View style={styles.columnClassName}>
                                     <Text style={styles.labelClassName}>Class Monitor's Name</Text>
@@ -139,71 +139,68 @@ const ClassManagerDetail = () => {
                                 </View>
                                 <View style={styles.columnCourseName}>
                                     <Text style={styles.labelCourseName}>Student Code</Text>
-                                    <select style={styles.dropdown}>
-                                        
-                                    </select>
+                                    <View style={styles.textBox}>
+                                        <Text style={styles.text}>SV3340112</Text>
+                                    </View>
                                 </View>
                             </View>
                             <View style={styles.infoBox3}>
-                                <View style={styles.infoBox1}>
                                     <View style={styles.columnClassName}>
-                                        <Text style={styles.labelClassName}>Class Name</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="class1">Class 1</option>
-                                            <option value="class2">Class 2</option>
-                                            <option value="class3">Class 3</option>
-                                        </select>
+                                        <Text style={styles.labelClassName}>Start Date</Text>
+                                    <View style={styles.textBoxDate}>
+                                        <Text style={styles.text}>T2102</Text>
+                                    </View>
                                     </View>
                                     <View style={styles.columnCourseName}>
-                                        <Text style={styles.labelCourseName}>Course Name</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="course1">Math</option>
-                                            <option value="course2">Physics</option>
-                                            <option value="course3">Chemistry</option>
-                                        </select>
+                                        <Text style={styles.labelCourseName}>End Date</Text>
+                                    <View style={styles.textBoxDate}>
+                                        <Text style={styles.text}>T2102</Text>
                                     </View>
-                                    <View style={styles.columnClassName}>
-                                        <Text style={styles.labelClassName}>Class Name</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="class1">Class 1</option>
-                                            <option value="class2">Class 2</option>
-                                            <option value="class3">Class 3</option>
-                                        </select>
                                     </View>
-                                    <View style={styles.columnCourseName}>
-                                        <Text style={styles.labelCourseName}>Course Name</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="course1">Math</option>
-                                            <option value="course2">Physics</option>
-                                            <option value="course3">Chemistry</option>
+                                <View style={styles.columnStartTime}>
+                                    <Text style={styles.labelClassName}>Start Time</Text>
+                                    <View style={styles.row}>
+                                        <View style={styles.textBoxTime}>
+                                            <Text style={styles.text}>T2102</Text>
+                                        </View>
+                                        <select style={styles.dropdownTime}>
+                                            <option value="class1">AM</option>
+                                            <option value="class2">PM</option>
                                         </select>
                                     </View>
                                 </View>
+                                <View style={styles.columnEndTime}>
+                                    <Text style={styles.labelCourseName}>End Time</Text>
+                                    <View style={styles.row}>
+                                        <View style={styles.textBoxTime}>
+                                            <Text style={styles.text}>T2102</Text>
+                                        </View>
+                                        <select style={styles.dropdownTime}>
+                                            <option value="class1">AM</option>
+                                            <option value="class2">PM</option>
+                                        </select>
+                                    </View>
+                                </View>
+                                
                             </View>
                             <View style={styles.infoBox4}>
                                     <View style={styles.columnClassName}>
                                         <Text style={styles.labelClassName}>Maximun allowable late occurrences</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="class1">Class 1</option>
-                                            <option value="class2">Class 2</option>
-                                            <option value="class3">Class 3</option>
-                                        </select>
+                                        <View style={styles.textBox}>
+                                            <Text style={styles.text}>6</Text>
+                                        </View>
                                     </View>
                                     <View style={styles.columnCourseName}>
                                         <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="course1">Math</option>
-                                            <option value="course2">Physics</option>
-                                            <option value="course3">Chemistry</option>
-                                        </select>
+                                        <View style={styles.textBox}>
+                                            <Text style={styles.text}>4</Text>
+                                        </View>
                                     </View>
                                     <View style={styles.columnCourseName}>
-                                        <Text style={styles.labelCourseName}>Maximun allowable absence occurrences</Text>
-                                        <select style={styles.dropdown}>
-                                            <option value="course1">Math</option>
-                                            <option value="course2">Physics</option>
-                                            <option value="course3">Chemistry</option>
-                                        </select>
+                                        <Text style={styles.labelCourseName}>Allowed Late Time (minute)</Text>
+                                        <View style={styles.textBox}>
+                                            <Text style={styles.text}>05:00</Text>
+                                        </View>
                                     </View>
                             </View>
                         </View>
@@ -252,17 +249,9 @@ const ClassManagerDetail = () => {
                                                 onReply={() => {/* Handle reply action */ }}
                                             />
                                         ))}
-                                        {messages.map((message) => (
-                                            <ReplyBox
-                                                key={message.id}
-                                                avatar={message.avatar}
-                                                name={message.name}
-                                                content={message.content}
-                                                timestamp={message.timestamp}
-                                                onReply={() => {/* Handle reply action */ }}
-                                                onCancel={() => {/* Handle cancel action */ }}
-                                            />
-                                        ))}
+                                        <TouchableOpacity style={styles.moreRepliesButton}>
+                                            <Text style={styles.moreRepliesText}>4 more replies</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </ScrollView>
                             </View>
@@ -277,6 +266,11 @@ const ClassManagerDetail = () => {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     infoBox1: {
         width: '60%',
@@ -302,6 +296,14 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: 10,
     },
+    columnStartTime: {
+        flex: 1,
+        marginBottom: 10,
+    },
+    columnEndTime: {
+        flex: 1,
+        marginBottom: 10,
+    },
     dropdown: {
         width: '80%',
         padding: 10,
@@ -309,6 +311,52 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 5,
         marginBottom: 10,
+        height: 40,
+    },
+    dropdownTime: {
+        width: '40%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        height: 40,
+        marginRight: 30,
+    },
+    textBox: {
+        width: '80%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        justifyContent: 'center',
+        height: 40,
+    },
+    textBoxDate: { 
+        width: '65%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        justifyContent: 'center',
+        height: 40,
+    },
+    textBoxTime: {
+        width: '40%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        justifyContent: 'center',
+        height: 40,
+    },
+    text: {
+        fontSize: 16,
+        flexDirection: 'row',
+        flex: 1,
     },
     infoBox2: {
         width: '100%',
@@ -319,10 +367,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     infoBox3: {
-        width: '140%',
+        width: '80%',
         padding: 10,
-        marginHorizontal: -10,
-        marginTop: -20,
+        marginHorizontal: -18,
+        marginTop: -30,
         justifyContent: 'flex-start',
         flexDirection: 'row',
     },
@@ -330,7 +378,7 @@ const styles = StyleSheet.create({
         width: '50%',
         padding: 10,
         marginHorizontal: -18,
-        marginTop: -40,
+        marginTop: -30,
         justifyContent: 'flex-start',
         flexDirection: 'row',
     },
@@ -380,7 +428,18 @@ const styles = StyleSheet.create({
     infoContainer: {
         padding: 10,
         flexDirection: 'column',
-
+    },
+    moreRepliesButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: '#6A9AB0',
+        borderRadius: 5,
+        alignSelf: 'flex-start',
+        marginTop: 5,
+    },
+    moreRepliesText: {
+        fontSize: 14,
+        color: '#3a6d8c',
     },
     column: {
         flex: 1,
