@@ -11,13 +11,13 @@ const App = () => {
     if (authState.authenticated) {
       switch (authState.role) {
         case Role.MANAGER:
-          router.navigate("/section_manager/dashboard_manager");
+          router.push("/section_manager/dashboard_manager");
           break;
         case Role.STUDENT:
-          router.navigate("/section_student/dashboard_student");
+          router.push("/section_student/dashboard_student");
           break;
         case Role.TEACHER:
-          router.navigate("/section_teacher/dashboard_teacher");
+          router.push("/section_teacher/dashboard_teacher");
           break;
         default:
           console.log('Unknown role');

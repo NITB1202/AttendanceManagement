@@ -7,15 +7,16 @@ interface RoundedButtonProps{
     onPress: (event: GestureResponderEvent) => void;
     style?: ViewStyle;
     textStyle?: TextStyle;
+    focusColor?: string;
 }
 
-export default function RoundedButton({title, onPress, style, textStyle} : RoundedButtonProps){
+export default function RoundedButton({title, onPress, style, textStyle, focusColor = Colors.darkBlue} : RoundedButtonProps){
     const [fontsLoaded] = useFonts({Roboto_700Bold});
     if(!fontsLoaded) return null;
     
     return (
         <TouchableHighlight style={[styles.button, style]}
-                            underlayColor={Colors.darkBlue} onPress={onPress}>
+                            underlayColor={focusColor} onPress={onPress}>
             <Text style={[styles.text, textStyle]}>{title}</Text>
         </TouchableHighlight>
     );

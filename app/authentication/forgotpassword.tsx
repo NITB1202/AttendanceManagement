@@ -4,9 +4,51 @@ import RoundedButton from "@/component/RoundedButton";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import ErrorMessage from "@/component/ErrorMessage";
+import validateEmail from "@/util/validEmail";
+import authAPI from "@/apis/authAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState<{ title: string; description: string }>({
+      title: '',
+      description: '',
+  });
+
+  const handleClick = async () =>{
+    if(email === ""){
+      setShowError(true);
+      setError({
+        title: "Invalid email",
+        description: "Email is empty."
+      });
+      return;
+    }
+
+    if(!validateEmail(email)){
+      setShowError(true);
+      setError({
+        title: "Invalid email",
+        description: "Invalid email format."
+      })
+      return;
+    }
+
+    try{
+      await authAPI.sendCode(email);
+      AsyncStorage.setItem("email", email);
+      router.push("/authentication/verification");
+    }
+    catch (error) {
+      setShowError(true);
+      setError({
+        title: "Error",
+        description: "User not found."
+      });
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,23 +63,29 @@ export default function ForgotPassword() {
             title="Email"
             placeHolder="Enter your email..."
             style={styles.input}
+            onChangeText={setEmail}
           />
           <RoundedButton
             title="CONTINUE"
-            onPress={() => {
-              router.push("/authentication/verification");
-            }}
+            onPress={handleClick}
             style={styles.input}
           />
         </View>
       </View>
       <View style={styles.imageContainer}>
         <Image
-          style={styles.formatImage}
           source={require("../../assets/images/ForgotPassword.png")}
           resizeMode="contain"
         />
       </View>
+      {
+        showError &&
+        <ErrorMessage
+          title={error.title}
+          description={error.description}
+          setOpen={setShowError}>
+        </ErrorMessage>
+      }
     </SafeAreaView>
   );
 }
@@ -48,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    backgroundColor: "white",
   },
   partContainer: {
     flex: 1,
@@ -81,16 +130,11 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    marginBottom: 20,
+    marginBottom: 40,
   },
   imageContainer: {
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
-  },
-  formatImage: {
-    width: 356,
-    height: 280,
-    marginBottom: 60,
   },
 });
