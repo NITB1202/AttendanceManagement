@@ -17,12 +17,11 @@ import CheckBox from "../../component/CheckBox";
 import { useAuth } from "../../context/AuthContext";
 import { Role } from '@/enum/RoleEnum';
 import ErrorMessage from "@/component/ErrorMessage";
-import validateEmail from "@/util/validEmail";
 
 export default function Login() {
   const {onLogin} = useAuth();
   const [fontsLoaded] = useFonts({ Roboto_700Bold });
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -35,10 +34,10 @@ export default function Login() {
   if (!fontsLoaded) return null;  
 
   const handleLogin = async () => {
-    if(email === "")
+    if(username === "")
     {
       setShowError(true);
-      setError({title: "Invalid username", description: "Email is empty."});
+      setError({title: "Invalid username", description: "Username is empty."});
       return;
     }
 
@@ -49,14 +48,7 @@ export default function Login() {
       return;
     }
 
-    if(!validateEmail(email))
-    {
-      setShowError(true);
-      setError({title: "Invalid email", description: "Invalid email format"});
-      return;
-    }
-
-    const authState = await onLogin(email, password, remember);
+    const authState = await onLogin(username, password, remember);
 
     if (authState.authenticated) {
       if (authState.role === Role.MANAGER) {
@@ -81,9 +73,9 @@ export default function Login() {
           <Text style={styles.header}>SIGN IN</Text>
           <View style={styles.inputContainer}>
             <Input 
-              title="Email" 
-              placeHolder="Enter your email..."  
-              onChangeText={setEmail}/>
+              title="Username" 
+              placeHolder="Enter your username..."  
+              onChangeText={setUsername}/>
             <PasswordInput
               title="Password"
               placeHolder="Enter your password..."
