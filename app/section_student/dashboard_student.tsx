@@ -178,6 +178,7 @@ export default function DashboardStudent() {
         {/* Sử dụng SearchBar */}
 
         <View style={styles.tableContainer}>
+          <Text style={styles.chartTitle}>Attendance record</Text>
           <Table tableHeader={tableHeader} tableData={tableData} />
         </View>
       </ScrollView>
@@ -303,5 +304,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     fontWeight: "bold",
+  },
+  chartTitle: {
+    fontSize: 20,
+    fontWeight: "500",
   },
 });
