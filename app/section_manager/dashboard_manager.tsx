@@ -86,7 +86,7 @@ export default function ManagerDashboard() {
       value,
       label: index === Math.floor(group.values.length / 2) ? group.label : "", // Hiển thị nhãn ở giữa nhóm
       frontColor: group.colors[index],
-      spacing: index === group.values.length - 1 ? 20 : 2, // 10px giữa nhóm, 2px giữa các cột cùng nhóm
+      spacing: index === group.values.length - 1 ? 60 : 2, // 10px giữa nhóm, 2px giữa các cột cùng nhóm
     }))
   );
 
@@ -194,7 +194,7 @@ export default function ManagerDashboard() {
               <BarChart
                 data={flattenedData}
                 barWidth={40}
-                spacing={4} // Đặt cố định khoảng cách 2px giữa các cột
+                spacing={30} // Đặt cố định khoảng cách 2px giữa các cột
                 hideYAxisText={false} // Hiển thị các giá trị trục Y
                 yAxisTextStyle={styles.yAxisLabel} // Sử dụng style cho trục Y
                 yAxisThickness={1} // Độ dày của trục Y
