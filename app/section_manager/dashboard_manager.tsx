@@ -1,4 +1,5 @@
 import Layout from "@/component/Layout";
+import Table from "@/component/Table";
 import React, { useState } from "react";
 import {
   View,
@@ -8,6 +9,7 @@ import {
   FlatList,
   Image,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 
@@ -49,17 +51,32 @@ export default function ManagerDashboard() {
     {
       label: "Mon",
       values: [5, 14, 12],
-      colors: ["#1E88E5", "#FFC107", "#F44336"],
+      colors: ["#3A6D8C", "#FFC038", "#EF1F1F"],
     },
     {
       label: "Tue",
       values: [3, 7, 10],
-      colors: ["#1E88E5", "#FFC107", "#F44336"],
+      colors: ["#3A6D8C", "#FFC038", "#EF1F1F"],
     },
     {
       label: "Wed",
       values: [1, 19, 5],
-      colors: ["#1E88E5", "#FFC107", "#F44336"],
+      colors: ["#3A6D8C", "#FFC038", "#EF1F1F"],
+    },
+    {
+      label: "Thu",
+      values: [0, 0, 0], // Thứ không có dữ liệu
+      colors: ["#3A6D8C", "#FFC038", "#EF1F1F"],
+    },
+    {
+      label: "Fri",
+      values: [0, 0, 0], // Thứ không có dữ liệu
+      colors: ["#3A6D8C", "#FFC038", "#EF1F1F"],
+    },
+    {
+      label: "Sat",
+      values: [0, 0, 0], // Thứ không có dữ liệu
+      colors: ["#3A6D8C", "#FFC038", "#EF1F1F"],
     },
   ];
 
@@ -75,9 +92,15 @@ export default function ManagerDashboard() {
 
   console.log(flattenedData);
 
+  const tableHeader = ["NO", "CLASS NAME", "TEACHER NAME", "START TIME", "NUM"];
+  const tableData = [
+    ["1", "SE100.P12", "Albus Dumbledore", "7:30 AM", "12"],
+    ["2", "SE101.P11", "Severus Snape", "1:00 PM", "2"],
+  ];
+
   return (
     <Layout>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/* Thanh Filter */}
         <View style={styles.filterBar}>
           <Text style={styles.filterLabel}>Filter by</Text>
@@ -120,53 +143,77 @@ export default function ManagerDashboard() {
                 key={index}
                 style={[styles.summaryItem, { backgroundColor: item.color }]}
               >
-                <Image source={item.icon} style={styles.summaryIcon} />
-                <Text style={styles.summaryValue}>{item.value}</Text>
-                <Text style={styles.summaryLabel}>{item.label}</Text>
+                <View style={styles.summaryRow}>
+                  <Image source={item.icon} style={styles.summaryIcon} />
+                  <View style={styles.summaryTextContainer}>
+                    <Text style={styles.summaryValue}>{item.value}</Text>
+                    <Text style={styles.summaryLabel}>{item.label}</Text>
+                  </View>
+                </View>
               </View>
             ))}
           </View>
 
-          {/* Chú thích */}
-          <View style={styles.legendContainer}>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColorBox, { backgroundColor: "#4CAF50" }]}
-              />
-              <Text style={styles.legendText}>Permission</Text>
+          <View style={styles.bar}>
+            <View style={styles.topContent}>
+              <Text style={styles.chartTitle}>
+                Student attendance statistic table
+              </Text>
+              {/* Chú thích */}
+              <View style={styles.legendContainer}>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[
+                      styles.legendColorBox,
+                      { backgroundColor: "#3A6D8C" },
+                    ]}
+                  />
+                  <Text style={styles.legendText}>Permission</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[
+                      styles.legendColorBox,
+                      { backgroundColor: "#FFC038" },
+                    ]}
+                  />
+                  <Text style={styles.legendText}>Late</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[
+                      styles.legendColorBox,
+                      { backgroundColor: "#EF1F1F" },
+                    ]}
+                  />
+                </View>
+                <Text style={styles.legendText}>Without permission</Text>
+              </View>
             </View>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColorBox, { backgroundColor: "#FFC107" }]}
+            <View style={styles.containerBar}>
+              <BarChart
+                data={flattenedData}
+                barWidth={40}
+                spacing={4} // Đặt cố định khoảng cách 2px giữa các cột
+                hideYAxisText={false} // Hiển thị các giá trị trục Y
+                yAxisTextStyle={styles.yAxisLabel} // Sử dụng style cho trục Y
+                yAxisThickness={1} // Độ dày của trục Y
+                xAxisLabelTextStyle={styles.xAxisLabel}
+                noOfSections={6} // Số phần trên trục Y
+                maxValue={30} // Giá trị tối đa của trục Y
+                isAnimated
               />
-              <Text style={styles.legendText}>Late</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColorBox, { backgroundColor: "#F44336" }]}
-              />
-              <Text style={styles.legendText}>Without Permission</Text>
             </View>
           </View>
 
-          {/* Biểu đồ chi tiết */}
-          <Text style={styles.chartTitle}>
-            Student attendance statistic table
-          </Text>
-          <View style={styles.containerBar}>
-            <BarChart
-              data={flattenedData}
-              barWidth={40}
-              spacing={4} // Đặt cố định khoảng cách 2px giữa các cột
-              hideYAxisText
-              xAxisLabelTextStyle={styles.xAxisLabel}
-              noOfSections={4}
-              maxValue={30}
-              isAnimated
-            />
+          <View style={styles.tableContainer}>
+            <Text style={styles.chartTitle}>
+              Top classes with the most absent student
+            </Text>
+            <Table tableHeader={tableHeader} tableData={tableData} />
           </View>
         </View>
-      </View>
+      </ScrollView>
     </Layout>
   );
 }
@@ -212,6 +259,14 @@ const styles = StyleSheet.create({
     height: 16,
     marginLeft: 10,
   },
+  bar: {
+    backgroundColor: "#EFEFEF",
+    shadowColor: "#000", // Màu của bóng
+    shadowOffset: { width: 0, height: 3 }, // Độ lệch của bóng
+    shadowOpacity: 0.2, // Độ mờ của bóng
+    borderRadius: 10,
+  },
+
   dropdownOptions: {
     position: "absolute", // Đảm bảo dropdown đè lên nội dung
     top: 45, // Khoảng cách từ nút dropdown
@@ -236,34 +291,40 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 1, // Nội dung chính có zIndex thấp hơn dropdown
   },
+
   summary: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 20,
   },
   summaryItem: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 10,
-    borderRadius: 5,
     flex: 1,
+    borderRadius: 8,
+    padding: 12,
     marginHorizontal: 5,
   },
+  summaryRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   summaryIcon: {
-    width: 24,
-    height: 24,
-    marginBottom: 5,
+    width: 60,
+    height: 60,
+    marginRight: 10,
+  },
+  summaryTextContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
   },
   summaryValue: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: "bold",
     color: "#FFFFFF",
   },
   summaryLabel: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#FFFFFF",
-    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#000000",
   },
   legendContainer: {
     flexDirection: "row",
@@ -284,24 +345,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#000000",
   },
+  topContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingBottom: 20,
+    paddingHorizontal: 14,
+  },
+
   chartTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
+    textAlign: "left",
     marginBottom: 10,
+    paddingTop: 20,
   },
   containerBar: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
-    padding: 16,
+    padding: 20,
   },
   yAxisLabel: {
-    color: "#757575",
-    fontSize: 12,
+    color: "#333333",
+    fontSize: 16,
+    fontWeight: "400",
   },
   xAxisLabel: {
-    color: "#212121",
-    fontSize: 14,
-    fontWeight: "bold",
+    color: "#333333",
+    fontSize: 16,
+    fontWeight: "400",
+  },
+  tableContainer: {
+    marginBottom: 20,
+    display: "flex",
+    gap: 20,
+    marginTop: 20,
+    // alignItems: "center",
   },
 });
