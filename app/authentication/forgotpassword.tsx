@@ -6,6 +6,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import ErrorMessage from "@/component/ErrorMessage";
 import validateEmail from "@/util/validEmail";
+import authAPI from "@/apis/authAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -15,7 +17,7 @@ export default function ForgotPassword() {
       description: '',
   });
 
-  const handleClick = () =>{
+  const handleClick = async () =>{
     if(email === ""){
       setShowError(true);
       setError({
@@ -34,9 +36,18 @@ export default function ForgotPassword() {
       return;
     }
 
-
-
-    router.push("/authentication/verification");
+    try{
+      await authAPI.sendCode(email);
+      AsyncStorage.setItem("email", email);
+      router.push("/authentication/verification");
+    }
+    catch (error) {
+      setShowError(true);
+      setError({
+        title: "Error",
+        description: "User not found."
+      });
+    }
   }
 
   return (

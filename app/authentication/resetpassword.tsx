@@ -4,6 +4,8 @@ import RoundedButton from "@/component/RoundedButton";
 import PasswordInput from "@/component/PasswordInput";
 import { router } from "expo-router";
 import ErrorMessage from "@/component/ErrorMessage";
+import authAPI from "@/apis/authAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -14,7 +16,7 @@ export default function ResetPassword() {
       description: '',
   });
 
-  const handleConfirm = () =>{
+  const handleConfirm = async () =>{
     if(password === "")
     {
       setShowError(true);
@@ -40,12 +42,34 @@ export default function ResetPassword() {
       setShowError(true);
       setError({
         title: "Error",
-        description: "Password and confirm password do not match."
+        description: "Password and confirmed password do not match."
       })
       return;
     }
 
-    router.push("/authentication/passwordupdated");
+    const email = await AsyncStorage.getItem("email");
+    if(email === null)
+    {
+      setShowError(true);
+      setError({
+        title: "Error",
+        description: "Unable to locate recovered email."
+      });
+    }
+    else{
+      try{
+        await authAPI.reset(email, password);
+        AsyncStorage.removeItem("email");
+        router.push("/authentication/passwordupdated");
+      }
+      catch(error){
+        setShowError(true);
+        setError({
+          title: "Duplicated password",
+          description: "The new password is the same as the old password."
+      });
+      }
+    }
   }
 
   return (
