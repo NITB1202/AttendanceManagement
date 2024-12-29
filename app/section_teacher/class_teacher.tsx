@@ -13,11 +13,7 @@ const handleSearch = (query: string) => {
   console.log("Từ khóa tìm kiếm:", query);
 };
 
-const handleAddNew = () => {
-  console.log('Add New button clicked');
-};
-
-const ClassStudent = () => {
+const ClassTeacher = () => {
   const tableHeader = [
     "CLASS NAME",
     "COURSE NAME",
@@ -72,7 +68,7 @@ const ClassStudent = () => {
   );
 };
 
-export default ClassStudent;
+export default ClassTeacher;
 
 const styles = StyleSheet.create({
   container: {
