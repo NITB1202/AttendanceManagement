@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,8 @@ import {
   Text,
   Button,
   TouchableOpacity,
+  Modal,
+  TextInput,
 } from "react-native";
 import Layout from "../../component/Layout"; // Import Layout component
 import TableComponent from "../../component/Table"; // Import TableComponent của bạn
@@ -20,6 +22,18 @@ const handleAddNew = () => {
 };
 
 const ClassManager = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newClassName, setNewClassName] = useState('');
+
+  const handleAddNew = () => {
+    setModalVisible(true);
+  };
+
+  const handleSave = () => {
+    console.log('New Class Name:', newClassName);
+    setModalVisible(false);
+  };
+
   const tableHeader = [
     "CLASS NAME",
     "COURSE NAME",
@@ -71,6 +85,70 @@ const ClassManager = () => {
         <View style={styles.tableContainer}>
           <TableComponent tableHeader={tableHeader} tableData={tableData} />
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Create New Class</Text>
+
+              <View style={styles.contentContainer}>
+                <View style={styles.contentBox1}>
+                  <Text style={styles.label}>Class Name</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter class name"
+                    value={newClassName}
+                    onChangeText={setNewClassName}
+                  />
+                  <Text style={styles.label}>Course Name</Text>
+                  <select style={styles.dropdown}>
+                    <option value="class1">Math</option>
+                    <option value="class2">Literature</option>
+                    <option value="class3">Physics</option>
+                  </select>
+                </View>
+                <View style={styles.contentBox2}>
+                  <View style={styles.column}>
+                    <Text style={styles.label}>Start Date</Text>
+                    <TextInput style={styles.input} placeholder="Input 1" />
+                    <Text style={styles.label}>Start Time</Text>
+                    <TextInput style={styles.input} placeholder="Input 1" />
+                    <select style={styles.dropdown}>
+                      <option value="class1">Math</option>
+                      <option value="class2">Literature</option>
+                      <option value="class3">Physics</option>
+                    </select>
+                  </View>
+                  <View style={styles.column}>
+                    <Text style={styles.label}>End Date</Text>
+                    <TextInput style={styles.input} placeholder="Input 2" />
+                    <Text style={styles.label}>End Time</Text>
+                    <TextInput style={styles.input} placeholder="Input 1" />
+                    <select style={styles.dropdown}>
+                      <option value="class1">Math</option>
+                      <option value="class2">Literature</option>
+                      <option value="class3">Physics</option>
+                    </select>
+                  </View>
+                </View>
+                <View style={styles.contentBox3}>
+                  áa
+                </View>
+              </View>
+              
+              <View style={styles.buttonContainer}>
+                <Button title="Save" onPress={handleSave} />
+                <Button title="Cancel" onPress={() => setModalVisible(false)} />
+              </View>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </Layout>
   );
@@ -127,5 +205,86 @@ const styles = StyleSheet.create({
     },
   tableContainer: {
     marginTop: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    width: 523,
+    height: 745,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    alignSelf: 'flex-start',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  input: {
+    width: '70%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 15,
+  },
+  contentBox1: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  contentBox2: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 5,
+  },
+  contentBox3: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  dropdown: {
+    width: '70%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  column: {
+    flex: 1,
+    marginHorizontal: 5,
   },
 });
