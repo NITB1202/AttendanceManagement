@@ -7,17 +7,19 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
-    Switch
+    Switch,
+    Modal,
 } from "react-native";
 import Layout from "../../component/Layout";
 import CommentBox from "../../component/CommentBox";
-import ReplyBox from "@/component/ReplyBox";
-import QuestionBox from "@/component/QuestionBox";
 import Table from "@/component/Table";
+import RoundedButton from "@/component/RoundedButton";
 
 const ClassManagerDetail = () => {
     const [activeTab, setActiveTab] = useState('General');
-    const [isAnonymous, setIsAnonymous] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [newClassName, setNewClassName] = useState('');
+
 
     const tableHeaderStudent = [
         "ORDER",
@@ -68,7 +70,12 @@ const ClassManagerDetail = () => {
     };
 
     const handleAddNew = () => {
-        console.log('Add New button clicked');
+        setModalVisible(true);
+    };
+
+    const handleSave = () => {
+        console.log('New Class Name:', newClassName);
+        setModalVisible(false);
     };
 
     const messages = [
@@ -207,13 +214,47 @@ const ClassManagerDetail = () => {
                         
                         <Text style={styles.header2}>Student List</Text>
                         <View style={styles.buttonContainer}>
-                            
                             <TouchableOpacity style={styles.button1} onPress={handleUploadExcel}>
                                 <Text style={styles.buttonText}>Upload Excel File</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.button2} onPress={handleAddNew}>
                                 <Text style={styles.buttonText}>Add New</Text>
                             </TouchableOpacity>
+                            {/* Modal */}
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    setModalVisible(!modalVisible);
+                                }}
+                            >
+                                <View style={styles.modalContainer}>
+                                    <View style={styles.modalView}>
+                                        <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                                            <Text style={styles.closeButtonText}>✕</Text>
+                                        </TouchableOpacity>
+                                        <Text style={styles.modalText}>Select a student</Text>
+                                        <Text style={styles.label}>Student Name</Text>
+                                        <select style={styles.dropdownModal}>
+                                            <option value="class1">Martin Blue</option>
+                                            <option value="class2">Martin Gray</option>
+                                        </select>
+                                        <Text style={styles.label}>Student Code</Text>
+                                        <View style={styles.textBoxCode}>
+                                            <Text style={styles.text}></Text>
+                                        </View>
+                                        <RoundedButton
+                                            title="CONFIRM"
+                                            onPress={() => { }}
+                                            style={styles.roundedButton}
+                                            textStyle={styles.roundedButtonText}
+                                        />
+                                        
+                                    </View>
+                                </View>
+                            </Modal>
+                                
                         </View>
                         <View style={styles.tableContainer}>
                             <Table tableHeader={tableHeaderStudent} tableData={tableDataStudent} />
@@ -306,6 +347,15 @@ const styles = StyleSheet.create({
     },
     dropdown: {
         width: '80%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        height: 40,
+    },
+    dropdownModal: {
+        width: '100%',
         padding: 10,
         borderWidth: 1,
         borderColor: '#ccc',
@@ -596,8 +646,8 @@ const styles = StyleSheet.create({
     },
     addButton: {
         marginTop: -75,
-        paddingVertical: 5, // Giảm padding chiều dọc
-        paddingHorizontal: 5, // Giảm padding chiều ngang
+        paddingVertical: 5, 
+        paddingHorizontal: 5, 
         backgroundColor: 'green',
         borderRadius: 5,
         alignItems: 'center',
@@ -647,6 +697,69 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalView: {
+        width: 297,
+        height: 300,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalText: {
+        alignSelf: 'flex-start',
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 15,
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        padding: 10,
+        borderRadius: 15,
+    },
+    closeButtonText: {
+        color: 'black',
+        fontSize: 24,
+    },
+    roundedButtonText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    roundedButton: {
+        marginTop: 25,
+        width: '100%',
+        height: 40,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 5,
+        alignSelf: 'flex-start',
+    },
+    textBoxCode: {
+        width: '100%',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        justifyContent: 'center',
+        height: 40,
     },
 });
 

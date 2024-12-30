@@ -18,10 +18,6 @@ const handleSearch = (query: string) => {
   console.log("Từ khóa tìm kiếm:", query);
 };
 
-const handleAddNew = () => {
-  console.log('Add New button clicked');
-};
-
 const ClassManager = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [newClassName, setNewClassName] = useState('');
@@ -170,7 +166,6 @@ const ClassManager = () => {
                   </View>
                 </View>
               </View>
-  
               <View style={styles.buttonContainer}>
                 <RoundedButton
                   title="CONFIRM"
@@ -178,7 +173,6 @@ const ClassManager = () => {
                   style={styles.roundedButton}
                   textStyle={styles.roundedButtonSave}
                 />
-                
               </View>
             </View>
           </View>
@@ -414,6 +408,5 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'black',
     fontSize: 24,
-    
   },
 });
