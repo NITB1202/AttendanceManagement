@@ -116,32 +116,50 @@ const ClassManager = () => {
                 <View style={styles.contentBox2}>
                   <View style={styles.column}>
                     <Text style={styles.label}>Start Date</Text>
-                    <TextInput style={styles.input} placeholder="Input 1" />
+                    <TextInput style={styles.inputTime} placeholder="Input 1" />
                     <Text style={styles.label}>Start Time</Text>
-                    <TextInput style={styles.input} placeholder="Input 1" />
-                    <select style={styles.dropdown}>
-                      <option value="class1">Math</option>
-                      <option value="class2">Literature</option>
-                      <option value="class3">Physics</option>
-                    </select>
+                    <View style={styles.row}>
+                      <TextInput style={styles.inputTime} placeholder="Input 1" />
+                      <select style={styles.dropdownTime}>
+                        <option value="class1">AM</option>
+                        <option value="class2">PM</option>
+                      </select>
+                    </View>
                   </View>
                   <View style={styles.column}>
                     <Text style={styles.label}>End Date</Text>
                     <TextInput style={styles.input} placeholder="Input 2" />
                     <Text style={styles.label}>End Time</Text>
-                    <TextInput style={styles.input} placeholder="Input 1" />
-                    <select style={styles.dropdown}>
-                      <option value="class1">Math</option>
-                      <option value="class2">Literature</option>
-                      <option value="class3">Physics</option>
-                    </select>
+                    <View style={styles.row}>
+                      <TextInput style={styles.inputTime} placeholder="Input 1" />
+                      <select style={styles.dropdownTime}>
+                        <option value="class1">AM</option>
+                        <option value="class2">PM</option>
+                      </select>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.contentBox3}>
-                  áa
+                  <View style={styles.column2}>
+                    <Text style={styles.label}>Teacher Name</Text>
+                    <select style={styles.dropdownTeacher}>
+                      <option value="class1">AM</option>
+                      <option value="class2">PM</option>
+                    </select>
+                    <Text style={styles.label}>Student List</Text>
+                    <View style={styles.textBoxList}>
+                      <Text style={styles.text}>SV3340112</Text>
+                    </View>
+                  </View>
+                  <View style={styles.column3}>
+                    <Text style={styles.label}>Teacher Code</Text>
+                    <View style={styles.textBoxCode}>
+                      <Text style={styles.text}>SV3340112</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
-              
+  
               <View style={styles.buttonContainer}>
                 <Button title="Save" onPress={handleSave} />
                 <Button title="Cancel" onPress={() => setModalVisible(false)} />
@@ -159,6 +177,11 @@ export default ClassManager;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   searchContainer: {
     flexDirection: "row",
@@ -243,6 +266,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 15,
   },
+  inputTime: {
+    width: '47%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  dropdownTime: {
+    width: '47%',
+    height: 40,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -267,6 +310,8 @@ const styles = StyleSheet.create({
   },
   contentBox3: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 5,
   },
   label: {
@@ -283,8 +328,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
   },
+  dropdownTeacher: {
+    width: '90%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
   column: {
     flex: 1,
     marginHorizontal: 5,
+  },
+  column2: {
+    flex: 2,
+    marginHorizontal: 5,
+  },
+  column3: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  textBoxCode: {
+    width: '80%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    justifyContent: 'center',
+    height: 40,
+  },
+  textBoxList: {
+    width: '90%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    justifyContent: 'center',
+    height: 40,
+  },
+  text: {
+    fontSize: 16,
+    flexDirection: 'row',
+    flex: 1,
   },
 });
