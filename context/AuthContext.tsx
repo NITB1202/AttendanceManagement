@@ -35,8 +35,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const restoreAuthState = async () => {
     try {
+      const remember = await AsyncStorage.getItem("remember");
       const accessToken = await AsyncStorage.getItem("accessToken");
-      if (accessToken) {
+      if (remember && accessToken) {
         const decodedToken = decodeToken(accessToken);
         let userRole = null;
 
@@ -75,10 +76,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const accessToken = response.data.accToken;
       const refreshToken = response.data.refreshToken;
 
-      if(rememeber){
-        AsyncStorage.setItem("accessToken", accessToken);
+      if(rememeber) AsyncStorage.setItem("remember", "true");
+
+      AsyncStorage.setItem("accessToken", accessToken);
       AsyncStorage.setItem("refreshToken", refreshToken);
-      }
 
       const decodedToken = decodeToken(accessToken);
 
@@ -124,6 +125,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     AsyncStorage.removeItem("accessToken");
     AsyncStorage.removeItem("refreshToken");
+    AsyncStorage.removeItem("remember");
   };
 
   return (

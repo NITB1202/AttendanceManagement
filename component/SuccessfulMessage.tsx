@@ -1,6 +1,7 @@
-import {View, Text, Image, Pressable, StyleSheet} from "react-native";
+import {View, Text, Image, Pressable, StyleSheet, Modal} from "react-native";
 import RoundedButton from "./RoundedButton";
 import { useFonts, Roboto_700Bold, Roboto_400Regular } from "@expo-google-fonts/roboto";
+import { Colors } from "@/constants/Colors";
 
 interface SuccessfulMesageProps{
     title: string;
@@ -17,24 +18,29 @@ export default function SuccessfulMessage({title, description, setOpen}: Success
     if(!fontsLoaded) return null;
 
     return (
-        <View style={styles.shadow}>
-            <View style={styles.messageContainer}>
-                <Pressable onPress={()=> setOpen(false)}>
-                    <Image source={require("../assets/images/icon/close.png")}/>
-                </Pressable>
-                <View style={styles.titleContainer}>
-                    <Image source={require("../assets/images/icon/success-icon.png")}/>
-                    <Text style={styles.title}>{title}</Text>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            onRequestClose={()=>setOpen(false)}>
+            <View style={styles.shadow}>
+                <View style={styles.messageContainer}>
+                    <Pressable onPress={()=> setOpen(false)}>
+                        <Image source={require("../assets/images/icon/close.png")}/>
+                    </Pressable>
+                    <View style={styles.titleContainer}>
+                        <Image source={require("../assets/images/icon/success-icon.png")}/>
+                        <Text style={styles.title}>{title}</Text>
+                    </View>
+                    <Text style={styles.description}>{description}</Text>
+                    <RoundedButton
+                        title="OK"
+                        style={styles.button}
+                        focusColor={Colors.focusGreen}
+                        onPress={()=> setOpen(false)}>
+                    </RoundedButton>
                 </View>
-                <Text style={styles.description}>{description}</Text>
-                <RoundedButton
-                    title="OK"
-                    style={styles.button}
-                    focusColor="#057616"
-                    onPress={()=> setOpen(false)}>
-                </RoundedButton>
             </View>
-        </View>
+        </Modal>
     );
 }
 
@@ -87,6 +93,6 @@ const styles = StyleSheet.create({
     button:{
         width: "100%",
         height: 34,
-        backgroundColor: "#00B01A",
+        backgroundColor: Colors.green,
     }
 });
