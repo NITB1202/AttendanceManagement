@@ -9,34 +9,36 @@ import {
   Image,
   ScrollView,
 } from "react-native";
+import DateTimePicker from "react-native-ui-datepicker";
+import dayjs, { Dayjs } from "dayjs";
 
 const ProfileScreen = () => {
   const [username, setUsername] = useState("Anna Maderlaise");
   const [fullName, setFullName] = useState("Anna Maderlaise");
-  const [dateOfBirth, setDateOfBirth] = useState("12/07/1998");
+  const [dateOfBirth, setDateOfBirth] = useState<Dayjs>(dayjs("1998-07-12")); // Sử dụng kiểu Dayjs
   const [phone, setPhone] = useState("0934567823");
   const [roleCode, setRoleCode] = useState("");
-
+  const [showPicker, setShowPicker] = useState(false);
   return (
     <Layout>
       <ScrollView contentContainerStyle={styles.container}>
-        {/* Phần Avatar */}
+        {/* Avatar */}
         <View style={styles.avatarContainer}>
           <Image
             source={{
-              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_gaxAkYYDw8UfNleSC2Viswv3xSmOa4bIAQ&s", // Thay URL này bằng ảnh thực tế
+              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_gaxAkYYDw8UfNleSC2Viswv3xSmOa4bIAQ&s",
             }}
             style={styles.avatar}
           />
           <TouchableOpacity style={styles.iconContainer}>
             <Image
-              source={require("../assets/images/icon/camera.png")} // Đường dẫn ảnh có sẵn
+              source={require("../assets/images/icon/Avatar.png")}
               style={styles.iconImage}
             />
           </TouchableOpacity>
         </View>
 
-        {/* Form thông tin */}
+        {/* Form */}
         <Text style={styles.label}>User name</Text>
         <TextInput
           style={styles.input}
@@ -54,17 +56,39 @@ const ProfileScreen = () => {
           placeholder="Enter full name"
           placeholderTextColor={styles.placeholder.color}
         />
+
         <View style={styles.row}>
           <View style={[styles.column, { marginRight: 10 }]}>
             <Text style={styles.label}>Date of birth</Text>
-            <TextInput
-              style={styles.input}
-              value={dateOfBirth}
-              onChangeText={setDateOfBirth}
-              placeholder="DD/MM/YYYY"
-              placeholderTextColor={styles.placeholder.color}
-            />
+            <View style={styles.inputWithIcon}>
+              <TextInput
+                style={[styles.input, { flex: 1 }]}
+                value={dateOfBirth.format("DD/MM/YYYY")} // Hiển thị ngày dạng chuỗi
+                editable={false} // Không cho phép nhập
+                placeholder="DD/MM/YYYY"
+                placeholderTextColor={styles.placeholder.color}
+              />
+              <TouchableOpacity onPress={() => setShowPicker(true)}>
+                <Image
+                  source={require("../assets/images/icon/Icon button.png")}
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
+            </View>
+            {showPicker && (
+              <DateTimePicker
+                mode="single"
+                date={dateOfBirth.toDate()} // Chuyển đổi sang kiểu Date
+                onChange={(params) => {
+                  if (params.date) {
+                    setDateOfBirth(dayjs(params.date)); // Cập nhật trạng thái
+                    setShowPicker(false); // Đóng picker
+                  }
+                }}
+              />
+            )}
           </View>
+
           <View style={styles.column}>
             <Text style={styles.label}>Phone</Text>
             <TextInput
@@ -104,11 +128,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: 459,
     justifyContent: "center",
-    alignSelf: "center", // Đảm bảo căn giữa nếu container có kích thước cố định
+    alignSelf: "center",
   },
   avatarContainer: {
     alignItems: "center",
-
     position: "relative",
   },
   avatar: {
@@ -119,27 +142,27 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   iconContainer: {
-    bottom: 40,
-    left: 60,
-    backgroundColor: "#3A6D8C",
-    borderRadius: 23,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    elevation: 3, // Hiệu ứng nổi
+    bottom: 30,
+    left: 40,
+    borderRadius: 28,
+    padding: 2,
+    borderWidth: 0,
   },
   iconImage: {
-    margin: 4,
-    width: 18,
-    height: 14,
+    width: 38,
+    height: 38,
+  },
+  inputWithIcon: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  datePicker: {
+    width: "100%", // Điều chỉnh kích thước cho phù hợp
   },
   label: {
     fontSize: 16,
     marginBottom: 5,
-    fontWeight: "400",
+    fontWeight: "500",
   },
   input: {
     height: 40,
@@ -154,13 +177,12 @@ const styles = StyleSheet.create({
     color: "rgba(0, 0, 0, 0.3)",
   },
   resetPassword: {
-    color: "#0900FF", // Màu xanh
-    textAlign: "left", // Căn lề trái
-    marginBottom: 20, // Khoảng cách dưới
-    fontSize: 20, // Kích thước chữ
-    textDecorationLine: "underline", // Gạch chân
+    color: "#0900FF",
+    textAlign: "left",
+    marginBottom: 20,
+    fontSize: 20,
+    textDecorationLine: "underline",
   },
-
   saveButton: {
     backgroundColor: "#3A6D8C",
     paddingVertical: 10,
@@ -174,10 +196,21 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 15,
+
+    gap: 30,
   },
   column: {
     flex: 1,
+  },
+  datePickerContainer: {
+    width: "100%", // Áp dụng style ở đây
+  },
+
+  icon: {
+    width: 24,
+    height: 24,
+    marginLeft: 10,
+    marginBottom: 19,
   },
 });
 
