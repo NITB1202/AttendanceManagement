@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   StyleSheet,
@@ -6,20 +6,31 @@ import {
   Text,
   Button,
   TouchableOpacity,
+  Modal,
+  TextInput,
 } from "react-native";
 import Layout from "../../component/Layout"; // Import Layout component
 import TableComponent from "../../component/Table"; // Import TableComponent của bạn
 import SearchBar from "@/component/SearchBar";
+import RoundedButton from "@/component/RoundedButton";
 
 const handleSearch = (query: string) => {
   console.log("Từ khóa tìm kiếm:", query);
 };
 
-const handleAddNew = () => {
-  console.log('Add New button clicked');
-};
-
 const ClassManager = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newClassName, setNewClassName] = useState('');
+
+  const handleAddNew = () => {
+    setModalVisible(true);
+  };
+
+  const handleSave = () => {
+    console.log('New Class Name:', newClassName);
+    setModalVisible(false);
+  };
+
   const tableHeader = [
     "CLASS NAME",
     "COURSE NAME",
@@ -71,6 +82,101 @@ const ClassManager = () => {
         <View style={styles.tableContainer}>
           <TableComponent tableHeader={tableHeader} tableData={tableData} />
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                <Text style={styles.closeButtonText}>✕</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.modalText}>Create New Class</Text>
+
+              <View style={styles.contentContainer}>
+                <View style={styles.contentBox1}>
+                  <Text style={styles.label}>Class Name</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter class name"
+                    value={newClassName}
+                    onChangeText={setNewClassName}
+                  />
+                  <Text style={styles.label}>Course Name</Text>
+                  <select style={styles.dropdown}>
+                    <option value="class1">Math</option>
+                    <option value="class2">Literature</option>
+                    <option value="class3">Physics</option>
+                  </select>
+                </View>
+                <View style={styles.contentBox2}>
+                  <View style={styles.column}>
+                    <Text style={styles.label}>Start Date</Text>
+                    <TextInput style={styles.input} placeholder="" />
+                    <Text style={styles.label}>Start Time</Text>
+                    <View style={styles.row}>
+                      <TextInput style={styles.inputTime} placeholder="" />
+                      <select style={styles.dropdownTime}>
+                        <option value="class1">AM</option>
+                        <option value="class2">PM</option>
+                      </select>
+                    </View>
+                  </View>
+                  <View style={styles.column}>
+                    <Text style={styles.label}>End Date</Text>
+                    <TextInput style={styles.input} placeholder="" />
+                    <Text style={styles.label}>End Time</Text>
+                    <View style={styles.row}>
+                      <TextInput style={styles.inputTime} placeholder="" />
+                      <select style={styles.dropdownTime}>
+                        <option value="class1">AM</option>
+                        <option value="class2">PM</option>
+                      </select>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.contentBox3}>
+                  <View style={styles.column2}>
+                    <Text style={styles.label}>Teacher Name</Text>
+                    <select style={styles.dropdownTeacher}>
+                      <option value="class1">Brian Anna</option>
+                      <option value="class2">Paul Gaspart</option>
+                    </select>
+                    <Text style={styles.label}>Student List</Text>
+                    <View style={styles.textBoxList}>
+                      <Text style={styles.text}></Text>
+                    </View>
+                  </View>
+                  <View style={styles.column3}>
+                    <Text style={styles.label}>Teacher Code</Text>
+                    <View style={styles.textBoxCode}>
+                      <Text style={styles.text}>SV3340112</Text>
+                    </View>
+                    <RoundedButton
+                      title="Upload Excel File"
+                      onPress={() => { }}
+                      style={styles.roundedButton}
+                      textStyle={styles.roundedButtonText}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View style={styles.buttonContainer}>
+                <RoundedButton
+                  title="CONFIRM"
+                  onPress={handleSave}
+                  style={styles.roundedButton}
+                  textStyle={styles.roundedButtonSave}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </Layout>
   );
@@ -81,6 +187,11 @@ export default ClassManager;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   searchContainer: {
     flexDirection: "row",
@@ -127,5 +238,175 @@ const styles = StyleSheet.create({
     },
   tableContainer: {
     marginTop: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    width: 523,
+    height: 670,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    alignSelf: 'flex-start',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  input: {
+    width: '70%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  inputTime: {
+    width: '47%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
+  dropdownTime: {
+    width: '47%',
+    height: 40,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 15,
+  },
+  contentBox1: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  contentBox2: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 5,
+  },
+  contentBox3: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 5,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  dropdown: {
+    width: '70%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  dropdownTeacher: {
+    width: '90%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  column: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  column2: {
+    flex: 2,
+    marginHorizontal: 5,
+  },
+  column3: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  textBoxCode: {
+    width: '80%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    justifyContent: 'center',
+    height: 40,
+  },
+  textBoxList: {
+    width: '90%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+    justifyContent: 'center',
+    height: 40,
+  },
+  text: {
+    fontSize: 16,
+    flexDirection: 'row',
+    flex: 1,
+  },
+  roundedButtonText: {
+    fontSize: 14, 
+    fontWeight: 'bold', 
+  },
+  roundedButtonSave: {
+    fontSize: 20, 
+    fontWeight: 'bold', 
+  },
+  roundedButton: {
+    marginTop: 25, 
+    width: '100%', 
+    height: 40, 
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 10,
+    borderRadius: 15,
+  },
+  closeButtonText: {
+    color: 'black',
+    fontSize: 24,
   },
 });
