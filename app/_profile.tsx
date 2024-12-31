@@ -29,8 +29,10 @@ const ProfileScreen = () => {
             style={styles.avatar}
           />
           <TouchableOpacity style={styles.iconContainer}>
-            <Text style={styles.iconText}>📸</Text>{" "}
-            {/* Hoặc dùng icon camera */}
+            <Image
+              source={require("../assets/images/icon/camera.png")} // Đường dẫn ảnh có sẵn
+              style={styles.iconImage}
+            />
           </TouchableOpacity>
         </View>
 
@@ -41,6 +43,7 @@ const ProfileScreen = () => {
           value={username}
           onChangeText={setUsername}
           placeholder="Enter user name"
+          placeholderTextColor={styles.placeholder.color}
         />
 
         <Text style={styles.label}>Full name</Text>
@@ -49,6 +52,7 @@ const ProfileScreen = () => {
           value={fullName}
           onChangeText={setFullName}
           placeholder="Enter full name"
+          placeholderTextColor={styles.placeholder.color}
         />
         <View style={styles.row}>
           <View style={[styles.column, { marginRight: 10 }]}>
@@ -58,6 +62,7 @@ const ProfileScreen = () => {
               value={dateOfBirth}
               onChangeText={setDateOfBirth}
               placeholder="DD/MM/YYYY"
+              placeholderTextColor={styles.placeholder.color}
             />
           </View>
           <View style={styles.column}>
@@ -68,6 +73,7 @@ const ProfileScreen = () => {
               onChangeText={setPhone}
               placeholder="Enter phone number"
               keyboardType="phone-pad"
+              placeholderTextColor={styles.placeholder.color}
             />
           </View>
         </View>
@@ -78,6 +84,7 @@ const ProfileScreen = () => {
           value={roleCode}
           onChangeText={setRoleCode}
           placeholder="Enter role code"
+          placeholderTextColor={styles.placeholder.color}
         />
 
         <TouchableOpacity>
@@ -95,14 +102,13 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 20,
     width: 459,
     justifyContent: "center",
     alignSelf: "center", // Đảm bảo căn giữa nếu container có kích thước cố định
   },
   avatarContainer: {
     alignItems: "center",
-    marginBottom: 20,
+
     position: "relative",
   },
   avatar: {
@@ -113,10 +119,10 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   iconContainer: {
-    bottom: 20,
-    left: 30,
-    backgroundColor: "#ffffff",
-    borderRadius: 20,
+    bottom: 40,
+    left: 60,
+    backgroundColor: "#3A6D8C",
+    borderRadius: 23,
     padding: 5,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -125,9 +131,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 3, // Hiệu ứng nổi
   },
-  iconText: {
-    fontSize: 18,
-    color: "#007bff", // Màu sắc cho icon
+  iconImage: {
+    margin: 4,
+    width: 18,
+    height: 14,
   },
   label: {
     fontSize: 16,
@@ -142,6 +149,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 15,
     backgroundColor: "#fff",
+  },
+  placeholder: {
+    color: "rgba(0, 0, 0, 0.3)",
   },
   resetPassword: {
     color: "#0900FF", // Màu xanh
