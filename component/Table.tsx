@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   headerCell: {
     flex: 1,
     padding: 10,
-    textAlign: "center",
+    textAlign: "left",
     color: "#fff",
     fontWeight: "bold",
   },
@@ -60,7 +60,9 @@ const styles = StyleSheet.create({
   dataCell: {
     flex: 1,
     padding: 10,
-    textAlign: "center",
+    textAlign: "left",
+    height: 50, // Chiều cao cố định
+    lineHeight: 20, // Dòng chữ căn đều
     color: "#333",
   },
 });
