@@ -1,3 +1,4 @@
+import attendanceApi from '@/apis/attendanceApi';
 import userApi from '@/apis/userApi';
 import RoundedButton from '@/component/RoundedButton';
 import { Colors } from '@/constants/Colors';
@@ -12,7 +13,8 @@ import { Button, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 const openCamera = () => {
   const [permission, requestPermission] = useCameraPermissions();
   const [isScanning, setIsScanning] = useState<boolean>(true);
-  const [scannedData, setScannedData] = useState<{ className: string; session: number }>({
+  const [scannedData, setScannedData] = useState<{id: number, className: string; session: number }>({
+    id: 0,
     className: "",
     session: 0,
   });
@@ -46,6 +48,7 @@ const openCamera = () => {
       try {
         const jsonData = JSON.parse(data);
         setScannedData({
+          id: jsonData.id,
           className: jsonData.className,
           session: jsonData.session,
         });
@@ -64,8 +67,15 @@ const openCamera = () => {
     return <View />;
   }
 
-  const handleConfirm = () =>{
-    router.back();
+  const handleConfirm =  async () =>{
+    try{
+      await attendanceApi.create(scannedData.id);
+      router.back();
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
   }
 
   if (!permission.granted) {

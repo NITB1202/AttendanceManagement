@@ -1,5 +1,5 @@
 import Layout from "@/component/Layout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,25 +14,38 @@ import RoundedButton from "@/component/RoundedButton";
 import QRCode from 'react-native-qrcode-svg';
 import { router } from "expo-router";
 import { Platform } from 'react-native';
+import classApi from "@/apis/classApi";
 
 const RollcallStudent = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedClass, setSelectedClass] = useState<string>("SE501.P12");
+  const [selectedClass, setSelectedClass] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [showQR, setShowQR] = useState(false);
-  const [QRContent, setQRContent] = useState<{className: string; session: number}>({
+  const [QRContent, setQRContent] = useState<{id: number, className: string; session: number}>({
+    id: 0,
     className: "",
     session: 0
   });
+  const [classes, setClasses] = useState<{id: number, className: string; session: number}[]>([]);
   
-  const classOptions: string[] = [
-    "SE501.P12",
-    "SE502.P11",
-    "SE503.P10",
-    "SE504.P09",
-    "SE505.P08",
-    "SE506.P07",
-  ];
+  useEffect(() => {
+    const getClassess = async () => {
+      try {
+        const response = await classApi.getRollCallClasses();
+        setClasses(response.data.map((item: any) => ({
+          id: item.session.id,
+          className: item.name,
+          session: item.session.no,
+        })));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getClassess();
+  }, []);
+
+
 
   const handleGenerateQRCode = () => {
     setModalVisible(true);
@@ -43,16 +56,13 @@ const RollcallStudent = () => {
     setShowDropdown(false);
   };
 
-  const handleSelectClass = (className: string) => {
-    setSelectedClass(className);
+  const handleSelectClass = (classroom: {id:number, className: string; session: number}) => {
+    setSelectedClass(classroom.className);
+    setQRContent(classroom);
     setShowDropdown(false);
   };
 
   const handleConfirm = () => {
-    setQRContent({
-      className: selectedClass,
-      session: 1
-    });
     setModalVisible(false);
     setShowQR(true);
   };
@@ -132,13 +142,15 @@ const RollcallStudent = () => {
 
               {showDropdown && (
                 <ScrollView style={styles.dropdownListInModal}>
-                  {classOptions.map((className, index) => (
+                  {
+                    classes &&
+                    classes.map((classroom, index) => (
                     <TouchableOpacity
                       key={index}
                       style={styles.dropdownItem}
-                      onPress={() => handleSelectClass(className)}
+                      onPress={() => handleSelectClass(classroom)}
                     >
-                      <Text style={styles.dropdownItemText}>{className}</Text>
+                      <Text style={styles.dropdownItemText}>{classroom.className}</Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
