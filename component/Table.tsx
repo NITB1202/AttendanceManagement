@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 interface TableComponentProps {
   tableHeader: string[];
-  tableData: string[][];
+  tableData: (string | React.ReactNode)[][];
 }
 
 export default function TableComponent({
